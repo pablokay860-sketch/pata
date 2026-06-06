@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PataPata Betting | Kenya's #1 Betting Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#00e676;--green-dark:#00c853;--gold:#FFD700;--red:#ff1744;--bg:#0a0e1a;--bg2:#111827;--bg3:#1a2235;--card:#1e2d45;--card2:#243454;--text:#e8f0fe;--text2:#8899bb;--plane:#00e5ff;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:68px;}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:58px;background:var(--bg2);border-bottom:2px solid #00e67622;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.2rem;color:var(--green);letter-spacing:2px;}
+.logo span{color:var(--gold);}
+.nav-balance{background:var(--card);padding:5px 12px;border-radius:20px;font-size:.82rem;color:var(--gold);font-weight:700;}
+.nav-balance small{color:var(--text2);font-weight:400;margin-right:3px;}
+.nav-btns{display:flex;gap:8px;}
+.page{display:none;}.page.active{display:block;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid #1e2d45;display:flex;z-index:100;}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 2px 6px;cursor:pointer;transition:all .2s;}
+.bnav-item .bicon{font-size:1.2rem;}
+.bnav-item .blabel{font-size:.6rem;color:var(--text2);margin-top:2px;}
+.bnav-item.active .blabel,.bnav-item.active .bicon{color:var(--green);}
+.btn{padding:10px 20px;border-radius:10px;border:none;cursor:pointer;font-family:'Exo 2',sans-serif;font-weight:700;font-size:.88rem;transition:all .2s;}
+.btn-green{background:var(--green);color:#000;}.btn-green:hover{background:var(--green-dark);transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1.5px solid var(--green);color:var(--green);}.btn-outline:hover{background:#00e67611;}
+.btn-gold{background:var(--gold);color:#000;}.btn-gold:hover{background:#e6c200;}
+.btn-full{width:100%;}.btn-sm{padding:6px 12px;font-size:.78rem;border-radius:7px;}
+.modal-overlay{display:none;position:fixed;inset:0;background:#00000099;z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid #00e67633;border-radius:16px;padding:28px;width:92%;max-width:420px;animation:slideUp .3s ease;max-height:90vh;overflow-y:auto;}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal h2{font-family:'Orbitron',monospace;color:var(--green);margin-bottom:18px;text-align:center;}
+.modal-close{float:right;cursor:pointer;color:var(--text2);font-size:1.3rem;margin-top:-6px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:.78rem;color:var(--text2);margin-bottom:5px;}
+.field input{width:100%;padding:9px 12px;background:var(--card);border:1px solid #334;border-radius:8px;color:var(--text);font-size:.92rem;outline:none;transition:border .2s;}
+.field input:focus{border-color:var(--green);}
+.tabs{display:flex;background:var(--card);border-radius:10px;padding:3px;margin-bottom:16px;}
+.tab{flex:1;padding:7px;text-align:center;border-radius:8px;cursor:pointer;font-size:.82rem;color:var(--text2);transition:all .2s;}
+.tab.active{background:var(--green);color:#000;font-weight:700;}
+.toast{position:fixed;top:66px;right:14px;padding:11px 18px;border-radius:10px;font-size:.82rem;font-weight:600;z-index:999;animation:fadeInOut 3.2s ease forwards;pointer-events:none;}
+.toast.success{background:var(--green);color:#000;}.toast.error{background:var(--red);color:#fff;}.toast.info{background:var(--gold);color:#000;}
+@keyframes fadeInOut{0%{opacity:0;transform:translateX(30px)}15%{opacity:1;transform:translateX(0)}80%{opacity:1}100%{opacity:0}}
+
+/* HOME */
+.hero{text-align:center;padding:32px 20px 18px;background:radial-gradient(ellipse at 50% 0%,#00e67615 0%,transparent 70%);}
+.hero h1{font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--green);}
+.hero h1 span{color:var(--gold);}
+.hero p{color:var(--text2);margin:8px 0 20px;font-size:.95rem;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.bonus-banner{margin:14px auto;max-width:700px;padding:16px 20px;background:linear-gradient(135deg,#1a2235,#243454);border:1.5px solid var(--gold);border-radius:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.bonus-text h3{color:var(--gold);font-family:'Orbitron',monospace;font-size:.9rem;}
+.bonus-text p{color:var(--text2);font-size:.8rem;margin-top:3px;}
+.quick-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;max-width:700px;margin:16px auto;padding:0 16px;}
+.qnav-card{background:var(--bg2);border:1px solid #1e2d45;border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;}
+.qnav-card:hover{border-color:var(--green);transform:translateY(-2px);}
+.qnav-card .qicon{font-size:1.8rem;}
+.qnav-card .qname{font-family:'Orbitron',monospace;font-size:.75rem;color:var(--green);margin-top:7px;}
+.qnav-card .qdesc{font-size:.72rem;color:var(--text2);margin-top:3px;}
+
+/* SPORTS */
+.sports-wrap{max-width:1000px;margin:0 auto;padding:14px;}
+.sport-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none;}
+.sport-tabs::-webkit-scrollbar{display:none;}
+.sport-tab{flex-shrink:0;padding:7px 16px;background:var(--card);border:1px solid #2a3a55;border-radius:20px;cursor:pointer;font-size:.8rem;color:var(--text2);transition:all .2s;white-space:nowrap;}
+.sport-tab.active{background:var(--green);color:#000;border-color:var(--green);font-weight:700;}
+
+/* API STATUS BAR */
+.api-bar{display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border-radius:10px;padding:8px 14px;margin-bottom:12px;font-size:.75rem;}
+.api-status{display:flex;align-items:center;gap:6px;}
+.api-dot{width:7px;height:7px;border-radius:50%;background:var(--text2);}
+.api-dot.live{background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 2s infinite;}
+.api-dot.error{background:var(--red);}
+.api-dot.loading{background:var(--gold);animation:blink 0.8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.api-refresh{background:var(--card);border:none;color:var(--text2);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.72rem;transition:all .2s;}
+.api-refresh:hover{color:var(--green);}
+.api-refresh.spinning{animation:spin 1s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.league-header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border-radius:10px;margin-bottom:8px;margin-top:6px;}
+.league-name{font-size:.82rem;font-weight:700;color:var(--text);}
+.league-count{margin-left:auto;font-size:.72rem;color:var(--text2);background:var(--card);padding:2px 8px;border-radius:10px;}
+
+/* MATCH CARD */
+.match-card{background:var(--bg2);border:1px solid #1e2d45;border-radius:12px;margin-bottom:8px;overflow:hidden;transition:border .2s;}
+.match-card:hover{border-color:#2a3a55;}
+.match-top{display:flex;align-items:center;justify-content:space-between;padding:8px 14px 4px;font-size:.72rem;color:var(--text2);}
+.match-live-badge{background:var(--red);color:#fff;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:700;animation:livePulse 1.5s infinite;}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.6}}
+.match-time-badge{background:var(--card);padding:2px 8px;border-radius:10px;font-size:.65rem;color:var(--text2);}
+.match-body{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:10px 14px;gap:8px;}
+.team-info{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
+.team-logo-img{width:32px;height:32px;border-radius:50%;object-fit:contain;background:var(--card);padding:2px;}
+.team-logo-fallback{width:32px;height:32px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--text2);}
+.team-name{font-size:.82rem;font-weight:600;color:var(--text);max-width:90px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.match-score{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:var(--gold);text-align:center;padding:6px 10px;background:var(--card);border-radius:8px;min-width:52px;}
+.match-score.vs{font-size:.8rem;color:var(--text2);background:none;}
+.match-score.live-score{color:var(--green);}
+.odds-row{display:grid;gap:6px;padding:8px 14px 10px;}
+.odd-btn{padding:8px 4px;background:var(--card);border:1.5px solid #2a3a55;border-radius:8px;text-align:center;cursor:pointer;transition:all .2s;}
+.odd-btn:hover{border-color:var(--green);background:#00e67611;}
+.odd-btn.selected{border-color:var(--green);background:#00e67622;}
+.odd-label{font-size:.68rem;color:var(--text2);margin-bottom:2px;}
+.odd-val{font-size:.92rem;font-weight:700;color:var(--gold);}
+
+/* SKELETON LOADER */
+.skeleton{background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:10px;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{height:110px;margin-bottom:8px;}
+.skel-league{height:40px;margin-bottom:8px;}
+
+/* M-PESA PAYMENT STYLES */
+.dep-quick{padding:7px 4px;background:var(--card);border:1.5px solid #2a3a55;border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:700;color:var(--text2);transition:all .2s;font-family:'Exo 2',sans-serif;}
+.dep-quick:hover{border-color:var(--green);color:var(--green);background:#00e67611;}
+.with-quick:hover{border-color:var(--gold);color:var(--gold);background:#FFD70011;}
+.stk-step{display:flex;align-items:center;gap:9px;font-size:.78rem;color:var(--text2);padding:6px 0;opacity:.4;transition:all .4s;}
+.stk-step.active{color:var(--text);opacity:1;}
+.stk-step.done{color:#4ade80;opacity:1;}
+.stk-step.pending{opacity:.3;}
+.stk-dot{width:8px;height:8px;border-radius:50%;background:var(--text2);flex-shrink:0;transition:all .4s;}
+.stk-step.active .stk-dot{background:var(--gold);box-shadow:0 0 8px var(--gold);animation:blink .8s infinite;}
+.stk-step.done .stk-dot{background:#4ade80;box-shadow:0 0 6px #4ade80;}
+
+/* BET SLIP */
+.betslip-fab{position:fixed;bottom:76px;right:14px;background:var(--green);color:#000;border:none;border-radius:50px;padding:10px 18px;font-weight:700;font-size:.82rem;cursor:pointer;z-index:99;display:none;align-items:center;gap:6px;box-shadow:0 4px 20px #00e67644;}
+.slip-count{background:#000;color:var(--green);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.75rem;}
+.betslip-modal{display:none;position:fixed;inset:0;background:#00000099;z-index:300;align-items:flex-end;justify-content:center;}
+.betslip-modal.open{display:flex;}
+.betslip-panel{background:var(--bg2);border:1px solid #00e67633;border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:20px;max-height:80vh;overflow-y:auto;animation:slideUp .3s ease;}
+.betslip-panel h3{font-family:'Orbitron',monospace;color:var(--green);font-size:.9rem;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.slip-item{background:var(--card);border-radius:10px;padding:12px;margin-bottom:10px;position:relative;}
+.slip-match{font-size:.78rem;color:var(--text2);margin-bottom:4px;}
+.slip-pick{font-size:.88rem;font-weight:700;color:var(--text);}
+.slip-odd{color:var(--gold);font-weight:700;}
+.slip-remove{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text2);cursor:pointer;font-size:1rem;}
+.slip-stake-row{display:flex;align-items:center;gap:10px;margin:14px 0 10px;}
+.slip-stake-row span{color:var(--gold);font-weight:700;white-space:nowrap;}
+.slip-stake-row input{flex:1;padding:9px;background:var(--card);border:1px solid #334;border-radius:8px;color:var(--text);font-size:.95rem;outline:none;}
+.slip-summary{background:var(--card);border-radius:10px;padding:12px;margin-bottom:14px;font-size:.82rem;}
+.slip-row{display:flex;justify-content:space-between;margin-bottom:6px;color:var(--text2);}
+.slip-row.total{color:var(--green);font-weight:700;font-size:.9rem;border-top:1px solid #2a3a55;padding-top:6px;margin-top:4px;}
+
+/* AVIATOR — Odi Bets style */
+:root{--avi-bg:#0b0e1a;--avi-bg2:#131929;--avi-card:#1a2236;--avi-border:#1e293b;--avi-red:#e5193a;--avi-orange:#f97316;--avi-yellow:#facc15;--avi-green:#22c55e;--avi-cyan:#06b6d4;--avi-purple:#a855f7;}
+.game-page-wrap{background:var(--avi-bg);min-height:calc(100vh - 126px);padding:0;}
+.avi-main-grid{display:grid;grid-template-columns:1fr 310px;gap:0;max-width:1200px;margin:0 auto;}
+@media(max-width:800px){.avi-main-grid{grid-template-columns:1fr;}}
+/* Canvas panel */
+.avi-canvas-panel{background:var(--avi-bg);border-right:1px solid var(--avi-border);}
+.avi-top-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--avi-bg2);border-bottom:1px solid var(--avi-border);}
+.avi-logo-badge{display:flex;align-items:center;gap:7px;}
+.avi-logo-badge .avi-icon{font-size:1.1rem;}
+.avi-logo-badge span{font-family:'Orbitron',monospace;font-size:.78rem;font-weight:900;color:#fff;letter-spacing:1px;}
+.avi-logo-badge .avi-spribe{font-size:.6rem;color:#888;margin-left:2px;}
+.avi-rtp-badge{background:#1e293b;border:1px solid #2a3a55;border-radius:20px;padding:3px 10px;font-size:.65rem;color:#94a3b8;}
+.avi-canvas-wrap{position:relative;background:var(--avi-bg);}
+#aviatorCanvas{display:block;width:100%;}
+/* Multiplier overlay */
+.multiplier-display{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);font-family:'Orbitron',monospace;font-size:3.4rem;font-weight:900;color:#fff;text-shadow:0 0 30px rgba(255,255,255,.3);pointer-events:none;transition:color .2s;text-align:center;line-height:1;}
+.multiplier-display .mult-sub{font-size:.7rem;color:#94a3b8;letter-spacing:3px;display:block;margin-top:4px;font-family:'Exo 2',sans-serif;font-weight:400;}
+.multiplier-display.flying{color:#fff;text-shadow:0 0 40px rgba(250,204,21,.5);}
+.multiplier-display.crashed{color:var(--avi-red);text-shadow:0 0 30px rgba(229,25,58,.6);}
+.multiplier-display.waiting{color:#94a3b8;font-size:1rem;text-shadow:none;}
+/* History chips */
+.avi-history-bar{display:flex;align-items:center;gap:5px;padding:7px 12px;background:var(--avi-bg2);border-top:1px solid var(--avi-border);overflow-x:auto;scrollbar-width:none;}
+.avi-history-bar::-webkit-scrollbar{display:none;}
+.hist-chip{padding:3px 9px;border-radius:20px;font-size:.68rem;font-weight:700;cursor:default;flex-shrink:0;}
+.hist-chip.high{color:var(--avi-purple);background:#a855f722;border:1px solid #a855f744;}
+.hist-chip.mid{color:var(--avi-cyan);background:#06b6d422;border:1px solid #06b6d444;}
+.hist-chip.low{color:var(--avi-red);background:#e5193a22;border:1px solid #e5193a44;}
+/* Live players bar */
+.avi-players-panel{border-top:1px solid var(--avi-border);}
+.avi-players-tabs{display:flex;background:var(--avi-bg2);border-bottom:1px solid var(--avi-border);}
+.avi-ptab{flex:1;padding:8px;text-align:center;font-size:.72rem;color:#64748b;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
+.avi-ptab.active{color:#fff;border-bottom-color:var(--avi-red);}
+.avi-players-list{max-height:180px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#1e293b transparent;}
+.avi-player-row{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:6px;padding:6px 14px;border-bottom:1px solid #0f172a;font-size:.75rem;}
+.avi-player-row:hover{background:#0f172a66;}
+.avi-player-name{color:#94a3b8;}
+.avi-player-bet{color:#e2e8f0;font-weight:600;}
+.avi-player-mult{font-weight:700;min-width:44px;text-align:right;}
+.avi-player-mult.won{color:var(--avi-green);}
+.avi-player-mult.playing{color:var(--avi-yellow);animation:livePulse 1.5s infinite;}
+.avi-player-mult.lost{color:var(--avi-red);}
+.avi-player-win{color:var(--avi-green);font-weight:700;min-width:70px;text-align:right;}
+/* Right bet panel */
+.avi-bet-panel{background:var(--avi-bg2);display:flex;flex-direction:column;}
+.avi-bet-tabs{display:flex;background:var(--avi-bg);border-bottom:1px solid var(--avi-border);}
+.avi-bet-tab{flex:1;padding:9px;text-align:center;font-size:.72rem;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.avi-bet-tab.active{color:#fff;border-bottom-color:var(--avi-red);}
+.avi-bet-content{padding:14px;}
+.avi-bet-amount-row{display:flex;align-items:center;background:var(--avi-card);border:1px solid var(--avi-border);border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.avi-bet-amount-row span{padding:0 11px;color:#64748b;font-size:.8rem;flex-shrink:0;}
+.avi-bet-amount-row input{flex:1;padding:10px 6px;background:transparent;border:none;color:#fff;font-size:1rem;font-weight:700;outline:none;min-width:0;}
+.avi-bet-amount-row .avi-bet-btns{display:flex;border-left:1px solid var(--avi-border);}
+.avi-bet-amount-row .avi-bet-btns button{padding:0 10px;background:none;border:none;color:#94a3b8;cursor:pointer;font-size:.85rem;height:100%;transition:all .2s;}
+.avi-bet-amount-row .avi-bet-btns button:hover{color:#fff;}
+.avi-quick-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px;}
+.avi-qbet{padding:6px 4px;background:var(--avi-card);border:1px solid var(--avi-border);border-radius:7px;cursor:pointer;font-size:.72rem;font-weight:600;color:#94a3b8;text-align:center;transition:all .2s;}
+.avi-qbet:hover{border-color:var(--avi-red);color:#fff;}
+/* Auto cashout toggle */
+.avi-auto-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.avi-auto-row label{font-size:.72rem;color:#64748b;flex:1;}
+.avi-toggle{position:relative;width:36px;height:20px;flex-shrink:0;}
+.avi-toggle input{opacity:0;width:0;height:0;}
+.avi-toggle-slider{position:absolute;inset:0;background:#1e293b;border-radius:20px;cursor:pointer;transition:.3s;}
+.avi-toggle-slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:#64748b;border-radius:50%;transition:.3s;}
+.avi-toggle input:checked+.avi-toggle-slider{background:#e5193a33;border:1px solid var(--avi-red);}
+.avi-toggle input:checked+.avi-toggle-slider:before{transform:translateX(16px);background:var(--avi-red);}
+.avi-auto-input{flex:1;padding:6px 9px;background:var(--avi-card);border:1px solid var(--avi-border);border-radius:7px;color:#fff;font-size:.82rem;outline:none;width:70px;}
+/* Bet button / cashout button */
+.avi-bet-btn{width:100%;padding:14px;border:none;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:.85rem;font-weight:900;letter-spacing:.5px;transition:all .2s;margin-bottom:6px;}
+.avi-bet-btn.idle{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 4px 20px rgba(22,163,74,.35);}
+.avi-bet-btn.idle:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(22,163,74,.5);}
+.avi-bet-btn.placed{background:#1e293b;border:2px solid #16a34a;color:#16a34a;cursor:default;}
+.avi-bet-btn.cancel{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;}
+.avi-cashout-btn{display:none;width:100%;padding:14px;border:none;border-radius:10px;cursor:pointer;font-family:'Orbitron',monospace;font-size:.82rem;font-weight:900;background:linear-gradient(135deg,#e5193a,#c41230);color:#fff;box-shadow:0 4px 20px rgba(229,25,58,.5);animation:cashoutPulse 1s infinite;}
+@keyframes cashoutPulse{0%,100%{box-shadow:0 4px 20px rgba(229,25,58,.5)}50%{box-shadow:0 4px 36px rgba(229,25,58,.9)}}
+.avi-cashout-btn .cashout-win{display:block;font-size:.65rem;font-weight:400;margin-top:2px;opacity:.9;}
+/* Stats row below bet */
+.avi-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px;}
+.avi-stat{background:var(--avi-card);border-radius:8px;padding:8px;text-align:center;}
+.avi-stat-val{font-size:.82rem;font-weight:700;color:var(--avi-yellow);}
+.avi-stat-lbl{font-size:.58rem;color:#64748b;margin-top:2px;}
+/* Round badge */
+.round-badge{background:var(--avi-card);padding:3px 9px;border-radius:20px;font-size:.65rem;color:#64748b;}
+/* Countdown overlay */
+.avi-countdown{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;}
+.avi-countdown-num{font-family:'Orbitron',monospace;font-size:4rem;font-weight:900;color:rgba(255,255,255,.15);}
+.avi-countdown-label{font-size:.72rem;color:#64748b;letter-spacing:2px;margin-top:4px;}
+
+/* WALLET & PROFILE */
+.wallet-wrap{max-width:580px;margin:24px auto;padding:16px;}
+.wallet-card{background:linear-gradient(135deg,var(--card),var(--card2));border-radius:18px;padding:26px;margin-bottom:18px;border:1px solid #FFD70033;text-align:center;}
+.bal-label{color:var(--text2);font-size:.82rem;}
+.bal-amount{font-family:'Orbitron',monospace;font-size:2.2rem;color:var(--gold);margin:6px 0;}
+.bal-sub{color:var(--text2);font-size:.78rem;}
+.wallet-actions{display:flex;gap:10px;margin-top:14px;justify-content:center;}
+.txn-list{background:var(--bg2);border-radius:14px;border:1px solid #1e2d45;overflow:hidden;}
+.txn-header{padding:12px 16px;border-bottom:1px solid #1e2d45;font-size:.82rem;color:var(--text2);font-weight:600;}
+.txn-item{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid #0d1520;}
+.txn-type{font-size:.88rem;font-weight:600;}.txn-date{font-size:.72rem;color:var(--text2);margin-top:2px;}
+.txn-amt{font-weight:700;font-size:.92rem;}.txn-amt.credit{color:var(--green);}.txn-amt.debit{color:var(--red);}
+.profile-wrap{max-width:580px;margin:24px auto;padding:16px;}
+.profile-card{background:var(--bg2);border-radius:16px;padding:22px;margin-bottom:14px;border:1px solid #1e2d45;}
+.profile-avatar{width:68px;height:68px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 10px;color:#000;font-weight:700;}
+.profile-name{text-align:center;font-family:'Orbitron',monospace;font-size:1rem;color:var(--green);}
+.profile-phone{text-align:center;color:var(--text2);font-size:.82rem;margin-top:3px;}
+.profile-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;}
+.stat-box{background:var(--card);border-radius:9px;padding:10px;text-align:center;}
+.stat-val{font-family:'Orbitron',monospace;font-size:.9rem;color:var(--gold);}
+.stat-label{font-size:.65rem;color:var(--text2);margin-top:3px;}
+.bonus-popup{display:none;position:fixed;inset:0;background:#000000cc;z-index:300;align-items:center;justify-content:center;}
+.bonus-popup.open{display:flex;}
+.bonus-box{background:var(--bg2);border:2px solid var(--gold);border-radius:20px;padding:32px;text-align:center;max-width:360px;width:90%;animation:zoomIn .4s ease;}
+@keyframes zoomIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.bonus-box .coin{font-size:3.8rem;animation:bounce 1s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.bonus-box h2{font-family:'Orbitron',monospace;color:var(--gold);font-size:1.2rem;margin:10px 0 6px;}
+.bonus-box .amount{font-family:'Orbitron',monospace;font-size:2.3rem;color:var(--green);margin:9px 0;}
+.bonus-box p{color:var(--text2);font-size:.82rem;margin-bottom:18px;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:#334;border-radius:3px;}
+.no-matches{text-align:center;padding:30px;color:var(--text2);font-size:.85rem;}
+.no-matches .nm-icon{font-size:2.5rem;margin-bottom:10px;}
+
+/* API KEY SETTINGS */
+.settings-btn{background:var(--card);border:1px solid #2a3a55;color:var(--text2);padding:4px 10px;border-radius:8px;cursor:pointer;font-size:.72rem;transition:all .2s;}
+.settings-btn:hover{border-color:var(--green);color:var(--green);}
+.api-key-input-wrap{position:relative;}
+.api-key-input-wrap input{padding-right:60px;}
+.api-key-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text2);cursor:pointer;font-size:.75rem;}
+.api-key-status{display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:8px;font-size:.78rem;margin-top:10px;}
+.api-key-status.valid{background:#00e67615;border:1px solid #00e67633;color:var(--green);}
+.api-key-status.invalid{background:#ff174415;border:1px solid #ff174433;color:var(--red);}
+.api-key-status.checking{background:#FFD70015;border:1px solid #FFD70033;color:var(--gold);}
+.key-info-box{background:var(--card);border-radius:8px;padding:10px 12px;font-size:.75rem;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+.key-info-box a{color:var(--green);text-decoration:none;}
+.key-info-box a:hover{text-decoration:underline;}
+.odds-source-badge{font-size:.62rem;background:var(--card);color:var(--text2);padding:2px 6px;border-radius:6px;margin-left:6px;}
+.odds-source-badge.real{color:var(--green);border:1px solid #00e67633;}
+.odds-source-badge.gen{color:var(--gold);border:1px solid #FFD70033;}
+/* DATA SOURCE MODAL */
+.src-btn{background:var(--card);border:2px solid #2a3a55;border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;}
+.src-btn.active{border-color:var(--green);background:#00e67611;}
+.src-btn:hover{border-color:var(--green);}
+.sport-toggle-row{display:flex;align-items:center;gap:8px;font-size:.8rem;cursor:pointer;padding:5px 8px;background:var(--card);border-radius:8px;}
+.sport-toggle-row input{accent-color:var(--green);}
+
+/* CALENDAR */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;}
+.cal-day-col{background:var(--bg2);border:1px solid #1e2d45;border-radius:10px;overflow:hidden;cursor:pointer;transition:border .2s;}
+.cal-day-col:hover,.cal-day-col.active{border-color:var(--green);}
+.cal-day-col.active .cal-day-header{background:var(--green);color:#000;}
+.cal-day-header{padding:5px;text-align:center;background:var(--bg3);font-size:.62rem;font-weight:700;color:var(--text2);}
+.cal-day-header .cal-date{font-family:'Orbitron',monospace;font-size:.8rem;color:var(--text);display:block;margin-top:1px;}
+.cal-day-matches{padding:4px;}
+.cal-match-pill{font-size:.6rem;color:var(--text2);background:var(--card);border-radius:4px;padding:2px 4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cal-match-pill.live{color:var(--red);background:#e5193a11;}
+.cal-match-pill.soon{color:var(--gold);}
+.cal-legend{display:flex;gap:10px;font-size:.65rem;color:var(--text2);padding:4px 0;}
+
+/* SPORT BADGE */
+.sport-type-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:10px;font-size:.62rem;font-weight:700;margin-left:6px;}
+.sport-type-badge.football{background:#00e67622;color:var(--green);border:1px solid #00e67633;}
+.sport-type-badge.basketball{background:#f9731622;color:#f97316;border:1px solid #f9731633;}
+.sport-type-badge.rugby{background:#a855f722;color:#a855f7;border:1px solid #a855f733;}
+.sport-type-badge.cricket{background:#06b6d422;color:#06b6d4;border:1px solid #06b6d433;}
+
+/* ALERT */
+.alert-item{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:8px;padding:7px 10px;margin-bottom:5px;}
+.alert-item .al-match{font-size:.78rem;color:var(--text);font-weight:600;}
+.alert-item .al-score{font-family:'Orbitron',monospace;font-size:.8rem;color:var(--gold);}
+.alert-item .al-remove{background:none;border:none;color:var(--text2);cursor:pointer;font-size:.85rem;}
+.alert-toast{position:fixed;top:66px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;padding:10px 18px;border-radius:10px;font-size:.82rem;font-weight:700;z-index:999;animation:fadeInOut 4s ease forwards;pointer-events:none;white-space:nowrap;display:flex;align-items:center;gap:8px;}
+
+/* REFRESH COUNTDOWN */
+#refreshCountdown{min-width:42px;text-align:center;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">PATA<span>PATA</span> ✈</div>
+  <div id="guestNav" class="nav-btns">
+    <button class="btn btn-outline btn-sm" onclick="openModal('loginModal')">LOGIN</button>
+    <button class="btn btn-green btn-sm" onclick="openModal('registerModal')">REGISTER</button>
+  </div>
+  <div id="userNav" style="display:none;align-items:center;gap:8px;">
+    <div class="nav-balance"><small>KES</small><span id="navBal">0.00</span></div>
+    <button class="btn btn-green btn-sm" onclick="openModal('depositModal')">+ Deposit</button>
+  </div>
+</nav>
+
+<div class="bottom-nav" id="bottomNav" style="display:none">
+  <div class="bnav-item active" onclick="showPage('home')"><div class="bicon">🏠</div><div class="blabel">Home</div></div>
+  <div class="bnav-item" onclick="showPage('sports')"><div class="bicon">⚽</div><div class="blabel">Sports</div></div>
+  <div class="bnav-item" onclick="showPage('game')"><div class="bicon">✈️</div><div class="blabel">Aviator</div></div>
+  <div class="bnav-item" onclick="showPage('wallet')"><div class="bicon">💰</div><div class="blabel">Wallet</div></div>
+  <div class="bnav-item" onclick="showPage('profile')"><div class="bicon">👤</div><div class="blabel">Account</div></div>
+</div>
+
+<button class="betslip-fab" id="betslipFab" onclick="openBetSlip()">
+  🎫 Bet Slip <span class="slip-count" id="slipCount">0</span>
+</button>
+
+<!-- ===== PAGES ===== -->
+<div id="homePage" class="page active">
+  <div class="hero">
+    <h1>PATA<span>PATA</span> BETTING</h1>
+    <p>Kenya's fastest growing sports & aviator platform 🇰🇪</p>
+    <div class="hero-btns">
+      <button class="btn btn-green" onclick="openModal('registerModal')">🎉 Join Free</button>
+      <button class="btn btn-outline" onclick="openModal('loginModal')">Login</button>
+    </div>
+  </div>
+  <div class="bonus-banner" style="margin:14px auto;max-width:700px;">
+    <div style="font-size:2.2rem">🎁</div>
+    <div class="bonus-text">
+      <h3>WELCOME BONUS — KES 500 FREE!</h3>
+      <p>Register now, get KES 500 instantly. No deposit required to start.</p>
+    </div>
+    <button class="btn btn-gold btn-sm" onclick="openModal('registerModal')">CLAIM</button>
+  </div>
+  <div class="quick-nav">
+    <div class="qnav-card" onclick="showPage('sports')"><div class="qicon">⚽</div><div class="qname">SPORTS</div><div class="qdesc">Live & Upcoming</div></div>
+    <div class="qnav-card" onclick="showPage('game')"><div class="qicon">✈️</div><div class="qname">AVIATOR</div><div class="qdesc">Fly & Cash Out</div></div>
+    <div class="qnav-card" onclick="openModal('depositModal')"><div class="qicon">💸</div><div class="qname">M-PESA</div><div class="qdesc">Instant Payments</div></div>
+    <div class="qnav-card"><div class="qicon">🏆</div><div class="qname">BIG WINS</div><div class="qdesc">Up to KES 500K</div></div>
+  </div>
+</div>
+
+<!-- SPORTS PAGE -->
+<div id="sportsPage" class="page">
+  <div class="sports-wrap">
+    <div class="sport-tabs" id="sportTabs">
+      <div class="sport-tab active" onclick="selectSport(this,'live')">🔴 Live Now</div>
+      <div class="sport-tab" onclick="showCalendar()">📅 7-Day Calendar</div>
+      <div class="sport-tab" onclick="selectSport(this,'today')">⚽ Football Today</div>
+      <div class="sport-tab" onclick="selectSport(this,'tomorrow')">⏭ Tomorrow</div>
+      <div class="sport-tab" onclick="selectSport(this,'basketball')">🏀 Basketball</div>
+      <div class="sport-tab" onclick="selectSport(this,'rugby')">🏉 Rugby</div>
+      <div class="sport-tab" onclick="selectSport(this,'cricket')">🏏 Cricket</div>
+      <div class="sport-tab" onclick="selectSport(this,'pl')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</div>
+      <div class="sport-tab" onclick="selectSport(this,'laliga')">🇪🇸 La Liga</div>
+      <div class="sport-tab" onclick="selectSport(this,'seriea')">🇮🇹 Serie A</div>
+      <div class="sport-tab" onclick="selectSport(this,'bundesliga')">🇩🇪 Bundesliga</div>
+      <div class="sport-tab" onclick="selectSport(this,'kpl')">🇰🇪 KPL Kenya</div>
+      <div class="sport-tab" onclick="selectSport(this,'ucl')">⭐ Champions League</div>
+    </div>
+
+    <div class="api-bar">
+      <div class="api-status">
+        <div class="api-dot" id="apiDot"></div>
+        <span id="apiStatusText" style="color:var(--text2)">Connecting...</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span id="refreshCountdown" style="color:var(--gold);font-size:.7rem;font-family:'Orbitron',monospace;display:none;"></span>
+        <span id="lastUpdated" style="color:var(--text2);font-size:.7rem;"></span>
+        <button class="api-refresh" id="refreshBtn" onclick="refreshMatches()">↻ Refresh</button>
+        <button class="settings-btn" id="alertBellBtn" onclick="toggleAlerts()" title="Score Alerts" style="position:relative;">
+          🔔<span id="alertBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;border-radius:50%;width:14px;height:14px;font-size:.55rem;display:none;align-items:center;justify-content:center;" id="alertBadge"></span>
+        </button>
+        <button class="settings-btn" onclick="openApiSettings()" title="API Settings">⚙ API Key</button>
+      </div>
+    </div>
+    <!-- 7-day calendar panel (hidden by default) -->
+    <div id="calendarPanel" style="display:none;margin-bottom:12px;"></div>
+    <!-- Score alerts panel (hidden by default) -->
+    <div id="alertsPanel" style="display:none;background:var(--bg3);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:.78rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="color:var(--text);font-weight:700;">🔔 Score Alerts</span>
+        <span style="color:var(--text2);font-size:.7rem;" id="alertCount">No active alerts</span>
+      </div>
+      <div id="alertsList" style="color:var(--text2);font-size:.75rem;">Enable alerts by clicking 🔔 on any live match.</div>
+    </div>
+
+    <div id="matchesContainer"></div>
+  </div>
+</div>
+
+<!-- AVIATOR PAGE — Odi Bets style -->
+<div id="gamePage" class="page">
+<div class="game-page-wrap">
+  <div class="avi-main-grid">
+
+    <!-- LEFT: Canvas + history + players -->
+    <div class="avi-canvas-panel">
+      <!-- Top bar -->
+      <div class="avi-top-bar">
+        <div class="avi-logo-badge">
+          <span class="avi-icon">✈️</span>
+          <span>AVIATOR <span class="avi-spribe">by SPRIBE</span></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="round-badge" id="roundBadge">Round #1</span>
+          <span class="rtp-badge" style="background:#1e293b;border:1px solid #2a3a55;border-radius:20px;padding:3px 9px;font-size:.62rem;color:#64748b;">RTP 97%</span>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="avi-canvas-wrap">
+        <canvas id="aviatorCanvas" width="700" height="300"></canvas>
+        <!-- Multiplier overlay -->
+        <div class="multiplier-display waiting" id="multiplierDisplay">
+          <span id="multVal">Waiting...</span>
+          <span class="mult-sub" id="multSub">PLACING BETS</span>
+        </div>
+      </div>
+
+      <!-- History chips -->
+      <div class="avi-history-bar" id="historyRow"></div>
+
+      <!-- Live players -->
+      <div class="avi-players-panel">
+        <div class="avi-players-tabs">
+          <div class="avi-ptab active" onclick="switchPlayerTab(this,'all')">All Bets</div>
+          <div class="avi-ptab" onclick="switchPlayerTab(this,'my')">My Bets</div>
+          <div class="avi-ptab" onclick="switchPlayerTab(this,'top')">Top Wins</div>
+        </div>
+        <!-- Table header -->
+        <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:6px;padding:5px 14px;background:#0f172a;font-size:.62rem;color:#475569;text-transform:uppercase;letter-spacing:.5px;">
+          <span>Player</span><span>Bet KES</span><span style="text-align:right">Mult</span><span style="text-align:right">Win KES</span>
+        </div>
+        <div class="avi-players-list" id="liveBetsList"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Bet panel -->
+    <div class="avi-bet-panel">
+      <div class="avi-bet-tabs">
+        <div class="avi-bet-tab active">Bet 1</div>
+        <div class="avi-bet-tab" style="opacity:.4;cursor:not-allowed">Bet 2</div>
+      </div>
+      <div class="avi-bet-content">
+        <!-- Amount -->
+        <div style="font-size:.68rem;color:#64748b;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">Bet Amount</div>
+        <div class="avi-bet-amount-row">
+          <span>KES</span>
+          <input type="number" id="betAmount" value="50" min="1" max="50000">
+          <div class="avi-bet-btns">
+            <button onclick="halveBet()">½</button>
+            <button onclick="doubleBet()">2×</button>
+          </div>
+        </div>
+        <!-- Quick amounts -->
+        <div class="avi-quick-row">
+          <div class="avi-qbet" onclick="setBet(10)">10</div>
+          <div class="avi-qbet" onclick="setBet(50)">50</div>
+          <div class="avi-qbet" onclick="setBet(100)">100</div>
+          <div class="avi-qbet" onclick="setBet(200)">200</div>
+          <div class="avi-qbet" onclick="setBet(500)">500</div>
+          <div class="avi-qbet" onclick="setBet(1000)">1K</div>
+          <div class="avi-qbet" onclick="setBet(2000)">2K</div>
+          <div class="avi-qbet" onclick="setBet(5000)">5K</div>
+        </div>
+        <!-- Auto cashout -->
+        <div class="avi-auto-row">
+          <label>Auto Cashout</label>
+          <label class="avi-toggle">
+            <input type="checkbox" id="autoCashoutToggle" checked>
+            <span class="avi-toggle-slider"></span>
+          </label>
+          <input type="number" id="autoCashout" value="2.00" step="0.1" min="1.1" class="avi-auto-input">
+          <span style="font-size:.72rem;color:#64748b;">x</span>
+        </div>
+        <!-- Bet button -->
+        <button class="avi-bet-btn idle" id="betBtn" onclick="placeBet()">
+          BET KES <span id="betDisplay">50</span>
+        </button>
+        <!-- Cashout button (hidden until flying) -->
+        <button class="avi-cashout-btn" id="cashoutBtn" onclick="cashOut()">
+          CASH OUT
+          <span class="cashout-win" id="cashoutWinAmt"></span>
+        </button>
+        <!-- Stats -->
+        <div class="avi-stats-row">
+          <div class="avi-stat"><div class="avi-stat-val" id="statGamesAvi">0</div><div class="avi-stat-lbl">Rounds</div></div>
+          <div class="avi-stat"><div class="avi-stat-val" id="statWinsAvi">0</div><div class="avi-stat-lbl">Wins</div></div>
+          <div class="avi-stat"><div class="avi-stat-val" id="statBestAvi">1.00x</div><div class="avi-stat-lbl">Best</div></div>
+        </div>
+        <!-- Limits -->
+        <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:.68rem;color:#475569;">
+          <span>Min: <strong style="color:#94a3b8">KES 1</strong></span>
+          <span>Max: <strong style="color:#94a3b8">KES 50,000</strong></span>
+          <span>Max Win: <strong style="color:var(--avi-yellow)">KES 3M</strong></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- WALLET PAGE -->
+<div id="walletPage" class="page">
+  <div class="wallet-wrap">
+    <div class="wallet-card">
+      <div class="bal-label">Main Balance</div>
+      <div class="bal-amount">KES <span id="walletBal">0.00</span></div>
+      <div class="bal-sub">Bonus: KES <span id="bonusBal">0.00</span></div>
+      <div class="wallet-actions">
+        <button class="btn btn-green" onclick="openModal('depositModal')">💳 Deposit</button>
+        <button class="btn btn-outline" onclick="openModal('withdrawModal')">📤 Withdraw</button>
+      </div>
+    </div>
+    <div class="txn-list">
+      <div class="txn-header">Transaction History</div>
+      <div id="txnList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div id="profilePage" class="page">
+  <div class="profile-wrap">
+    <div class="profile-card" style="text-align:center;">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-name" id="profileName">-</div>
+      <div class="profile-phone" id="profilePhone">-</div>
+      <div class="profile-stats">
+        <div class="stat-box"><div class="stat-val" id="statGames">0</div><div class="stat-label">Aviator</div></div>
+        <div class="stat-box"><div class="stat-val" id="statWins">0</div><div class="stat-label">Wins</div></div>
+        <div class="stat-box"><div class="stat-val" id="statSports">0</div><div class="stat-label">Sport Bets</div></div>
+        <div class="stat-box"><div class="stat-val" id="statBigWin">0x</div><div class="stat-label">Best Mult</div></div>
+      </div>
+    </div>
+    <button class="btn btn-outline btn-full" onclick="logout()" style="margin-top:10px;">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('registerModal')">✕</span>
+    <h2>CREATE ACCOUNT</h2>
+    <div class="field"><label>Full Name</label><input type="text" id="regName" placeholder="John Doe"></div>
+    <div class="field"><label>Phone Number</label><input type="tel" id="regPhone" placeholder="07XXXXXXXX"></div>
+    <div class="field"><label>Password</label><input type="password" id="regPass" placeholder="Min 6 characters"></div>
+    <button class="btn btn-green btn-full" onclick="register()">REGISTER & GET KES 500</button>
+    <p style="text-align:center;margin-top:10px;font-size:.78rem;color:var(--text2);">Have an account? <span style="color:var(--green);cursor:pointer;" onclick="closeModal('registerModal');openModal('loginModal')">Login</span></p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('loginModal')">✕</span>
+    <h2>LOGIN</h2>
+    <div class="field"><label>Phone Number</label><input type="tel" id="loginPhone" placeholder="07XXXXXXXX"></div>
+    <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="Your password"></div>
+    <button class="btn btn-green btn-full" onclick="login()">LOGIN</button>
+    <p style="text-align:center;margin-top:10px;font-size:.78rem;color:var(--text2);">No account? <span style="color:var(--green);cursor:pointer;" onclick="closeModal('loginModal');openModal('registerModal')">Register Free</span></p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="depositModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('depositModal')">✕</span>
+    <h2>DEPOSIT</h2>
+
+    <!-- M-Pesa branding -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;background:#006633;border-radius:12px;padding:10px 16px;margin-bottom:16px;">
+      <div style="background:#fff;border-radius:6px;padding:3px 8px;font-weight:900;font-size:.85rem;color:#006633;letter-spacing:1px;">M-PESA</div>
+      <span style="color:#fff;font-size:.78rem;opacity:.9;">Safaricom M-Pesa · Instant Deposit</span>
+      <span style="margin-left:auto;font-size:.75rem;color:#4ade80;">🔒 Secure</span>
+    </div>
+
+    <!-- Phone field -->
+    <div class="field">
+      <label>M-Pesa Phone Number</label>
+      <div style="display:flex;align-items:center;background:var(--card);border:1px solid #334;border-radius:8px;overflow:hidden;transition:border .2s;" id="depPhoneWrap">
+        <span style="padding:0 10px;color:#4ade80;font-weight:700;font-size:.85rem;border-right:1px solid #334;white-space:nowrap;">🇰🇪 +254</span>
+        <input type="tel" id="depPhone" placeholder="7XXXXXXXX" maxlength="9"
+          style="flex:1;padding:9px 10px;background:transparent;border:none;color:var(--text);font-size:.92rem;outline:none;"
+          oninput="formatDepPhone(this)" onfocus="document.getElementById('depPhoneWrap').style.borderColor='var(--green)'" onblur="document.getElementById('depPhoneWrap').style.borderColor='#334'">
+      </div>
+      <div id="depPhoneErr" style="font-size:.72rem;color:var(--red);margin-top:4px;display:none;">Enter a valid Safaricom number (07XX or 01XX)</div>
+    </div>
+
+    <!-- Amount field -->
+    <div class="field">
+      <label>Amount (KES)</label>
+      <div style="display:flex;align-items:center;background:var(--card);border:1px solid #334;border-radius:8px;overflow:hidden;transition:border .2s;" id="depAmtWrap">
+        <span style="padding:0 10px;color:var(--text2);font-size:.82rem;border-right:1px solid #334;">KES</span>
+        <input type="number" id="depAmount" placeholder="Min 10" min="10"
+          style="flex:1;padding:9px 10px;background:transparent;border:none;color:var(--text);font-size:.92rem;outline:none;"
+          oninput="updateDepSummary()"
+          onfocus="document.getElementById('depAmtWrap').style.borderColor='var(--green)'" onblur="document.getElementById('depAmtWrap').style.borderColor='#334'">
+      </div>
+    </div>
+
+    <!-- Quick amount chips -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;">
+      <button onclick="setDepAmt(50)"  class="dep-quick">50</button>
+      <button onclick="setDepAmt(100)" class="dep-quick">100</button>
+      <button onclick="setDepAmt(200)" class="dep-quick">200</button>
+      <button onclick="setDepAmt(500)" class="dep-quick">500</button>
+      <button onclick="setDepAmt(1000)" class="dep-quick">1K</button>
+      <button onclick="setDepAmt(2000)" class="dep-quick">2K</button>
+      <button onclick="setDepAmt(5000)" class="dep-quick">5K</button>
+      <button onclick="setDepAmt(10000)" class="dep-quick">10K</button>
+    </div>
+
+    <!-- Summary box -->
+    <div id="depSummary" style="display:none;background:var(--card);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:.8rem;">
+      <div style="display:flex;justify-content:space-between;color:var(--text2);margin-bottom:4px;"><span>Amount</span><span id="depSumAmt" style="color:var(--text);font-weight:700;"></span></div>
+      <div style="display:flex;justify-content:space-between;color:var(--text2);margin-bottom:4px;"><span>Processing Fee</span><span style="color:#4ade80;">FREE</span></div>
+      <div style="display:flex;justify-content:space-between;border-top:1px solid #2a3a55;padding-top:6px;margin-top:4px;color:var(--green);font-weight:700;"><span>You will receive</span><span id="depSumTotal"></span></div>
+    </div>
+
+    <!-- STK push info -->
+    <div style="background:#006633;background:linear-gradient(135deg,#00361a,#004d26);border-radius:8px;padding:10px 13px;font-size:.76rem;color:#86efac;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;">
+      <span style="font-size:1rem;">📱</span>
+      <span>A <strong style="color:#fff;">payment request</strong> will be sent to your phone. Open M-Pesa and enter your <strong style="color:#fff;">PIN</strong> to complete.</span>
+    </div>
+
+    <!-- STK progress (hidden until triggered) -->
+    <div id="depProgress" style="display:none;margin-bottom:14px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="stk-step" id="stkStep1"><span class="stk-dot"></span><span>Connecting to M-Pesa...</span></div>
+        <div class="stk-step pending" id="stkStep2"><span class="stk-dot"></span><span>STK Push sent to your phone</span></div>
+        <div class="stk-step pending" id="stkStep3"><span class="stk-dot"></span><span>Waiting for PIN confirmation</span></div>
+        <div class="stk-step pending" id="stkStep4"><span class="stk-dot"></span><span>Crediting your account</span></div>
+      </div>
+    </div>
+
+    <button class="btn btn-green btn-full" id="depBtn" onclick="doDeposit()" style="background:linear-gradient(135deg,#006633,#009944);font-size:.9rem;padding:13px;">
+      📲 SEND STK PUSH
+    </button>
+    <p style="text-align:center;font-size:.7rem;color:var(--text2);margin-top:8px;">Powered by Safaricom M-Pesa · Min KES 10 · No fees</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="withdrawModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('withdrawModal')">✕</span>
+    <h2>WITHDRAW</h2>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;background:#006633;border-radius:12px;padding:10px 16px;margin-bottom:16px;">
+      <div style="background:#fff;border-radius:6px;padding:3px 8px;font-weight:900;font-size:.85rem;color:#006633;letter-spacing:1px;">M-PESA</div>
+      <span style="color:#fff;font-size:.78rem;opacity:.9;">Withdraw to M-Pesa · Fast Payout</span>
+      <span style="margin-left:auto;font-size:.75rem;color:#4ade80;">⚡ ~2 min</span>
+    </div>
+    <div style="background:var(--card);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:.78rem;color:var(--text2);">Available Balance</span>
+      <span style="font-family:'Orbitron',monospace;color:var(--gold);font-weight:700;" id="withBalDisplay">KES 0.00</span>
+    </div>
+    <div class="field">
+      <label>M-Pesa Phone Number</label>
+      <div style="display:flex;align-items:center;background:var(--card);border:1px solid #334;border-radius:8px;overflow:hidden;transition:border .2s;" id="withPhoneWrap">
+        <span style="padding:0 10px;color:#4ade80;font-weight:700;font-size:.85rem;border-right:1px solid #334;white-space:nowrap;">🇰🇪 +254</span>
+        <input type="tel" id="withPhone" placeholder="7XXXXXXXX" maxlength="9"
+          style="flex:1;padding:9px 10px;background:transparent;border:none;color:var(--text);font-size:.92rem;outline:none;"
+          oninput="formatWithPhone(this)" onfocus="document.getElementById('withPhoneWrap').style.borderColor='var(--gold)'" onblur="document.getElementById('withPhoneWrap').style.borderColor='#334'">
+      </div>
+      <div id="withPhoneErr" style="font-size:.72rem;color:var(--red);margin-top:4px;display:none;">Enter a valid Safaricom number (07XX or 01XX)</div>
+    </div>
+    <div class="field">
+      <label>Amount (KES)</label>
+      <div style="display:flex;align-items:center;background:var(--card);border:1px solid #334;border-radius:8px;overflow:hidden;transition:border .2s;" id="withAmtWrap">
+        <span style="padding:0 10px;color:var(--text2);font-size:.82rem;border-right:1px solid #334;">KES</span>
+        <input type="number" id="withAmount" placeholder="Min 100" min="100"
+          style="flex:1;padding:9px 10px;background:transparent;border:none;color:var(--text);font-size:.92rem;outline:none;"
+          oninput="updateWithSummary()"
+          onfocus="document.getElementById('withAmtWrap').style.borderColor='var(--gold)'" onblur="document.getElementById('withAmtWrap').style.borderColor='#334'">
+        <button onclick="setWithMax()" style="padding:0 12px;background:var(--card2);border:none;border-left:1px solid #334;color:var(--gold);font-size:.72rem;font-weight:700;cursor:pointer;height:38px;">MAX</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;">
+      <button onclick="setWithAmt(100)"  class="dep-quick with-quick">100</button>
+      <button onclick="setWithAmt(200)"  class="dep-quick with-quick">200</button>
+      <button onclick="setWithAmt(500)"  class="dep-quick with-quick">500</button>
+      <button onclick="setWithAmt(1000)" class="dep-quick with-quick">1K</button>
+    </div>
+    <div id="withSummary" style="display:none;background:var(--card);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:.8rem;">
+      <div style="display:flex;justify-content:space-between;color:var(--text2);margin-bottom:4px;"><span>Withdrawal Amount</span><span id="withSumAmt" style="color:var(--text);font-weight:700;"></span></div>
+      <div style="display:flex;justify-content:space-between;color:var(--text2);margin-bottom:4px;"><span>Transaction Fee</span><span style="color:#4ade80;">FREE</span></div>
+      <div style="display:flex;justify-content:space-between;color:var(--text2);margin-bottom:4px;"><span>Remaining Balance</span><span id="withSumBal" style="color:var(--text);"></span></div>
+      <div style="display:flex;justify-content:space-between;border-top:1px solid #2a3a55;padding-top:6px;margin-top:4px;color:var(--gold);font-weight:700;"><span>You will receive</span><span id="withSumTotal"></span></div>
+    </div>
+    <div style="background:linear-gradient(135deg,#00361a,#004d26);border-radius:8px;padding:10px 13px;font-size:.76rem;color:#86efac;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;">
+      <span style="font-size:1rem;">⚡</span>
+      <span>Funds sent directly to your <strong style="color:#fff;">M-Pesa wallet</strong> within <strong style="color:#fff;">2 minutes</strong>. Available 24/7.</span>
+    </div>
+    <div id="withProgress" style="display:none;margin-bottom:14px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="stk-step" id="withStep1"><span class="stk-dot"></span><span>Verifying your account...</span></div>
+        <div class="stk-step pending" id="withStep2"><span class="stk-dot"></span><span>Processing withdrawal</span></div>
+        <div class="stk-step pending" id="withStep3"><span class="stk-dot"></span><span>Sending to M-Pesa</span></div>
+        <div class="stk-step pending" id="withStep4"><span class="stk-dot"></span><span>Confirming transaction</span></div>
+      </div>
+    </div>
+    <button class="btn btn-gold btn-full" id="withBtn" onclick="doWithdraw()" style="font-size:.9rem;padding:13px;">
+      💸 WITHDRAW NOW
+    </button>
+    <p style="text-align:center;font-size:.7rem;color:var(--text2);margin-top:8px;">Min KES 100 · Max KES 150,000 · No fees</p>
+  </div>
+</div>
+
+<div class="betslip-modal" id="betslipModal">
+  <div class="betslip-panel">
+    <h3>🎫 BET SLIP <span class="modal-close" style="font-size:1rem;" onclick="closeBetSlip()">✕</span></h3>
+    <div id="slipItems"></div>
+    <div class="slip-stake-row">
+      <span>KES</span>
+      <input type="number" id="slipStake" value="100" min="10" oninput="updateSlipSummary()">
+    </div>
+    <div class="slip-summary" id="slipSummary"></div>
+    <button class="btn btn-green btn-full" onclick="placeSportsBet()">PLACE BET</button>
+    <button class="btn btn-outline btn-full" style="margin-top:8px;" onclick="clearSlip()">CLEAR ALL</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="apiSettingsModal">
+  <div class="modal">
+    <span class="modal-close" onclick="closeModal('apiSettingsModal')">✕</span>
+    <h2>⚙ DATA SOURCE</h2>
+
+    <!-- SportRadar branding -->
+    <div style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0f1e36,#1a2e4a);border:1px solid #FFD70033;border-radius:12px;padding:11px 14px;margin-bottom:14px;">
+      <div style="background:#e8382d;border-radius:6px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📡</div>
+      <div>
+        <div style="font-weight:700;font-size:.88rem;color:var(--text);">Sportradar</div>
+        <div style="font-size:.7rem;color:var(--text2);">Official data partner of NFL, NBA, UEFA, ICC & more</div>
+      </div>
+      <div style="margin-left:auto;font-size:.65rem;background:#00e67622;color:var(--green);border:1px solid #00e67633;padding:3px 7px;border-radius:6px;">LIVE DATA</div>
+    </div>
+
+    <!-- Data source toggle -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;">
+      <div id="srcBtnSR" class="src-btn active" onclick="setDataSource('sportradar')">
+        <div style="font-size:1rem;">📡</div>
+        <div style="font-weight:700;font-size:.78rem;">Sportradar</div>
+        <div style="font-size:.62rem;color:var(--text2);">Professional tier</div>
+      </div>
+      <div id="srcBtnAF" class="src-btn" onclick="setDataSource('apifootball')">
+        <div style="font-size:1rem;">⚽</div>
+        <div style="font-weight:700;font-size:.78rem;">API-Football</div>
+        <div style="font-size:.62rem;color:var(--text2);">Free tier (100/day)</div>
+      </div>
+    </div>
+
+    <!-- Key info box (changes with source) -->
+    <div class="key-info-box" id="keyInfoBox">
+      <strong style="color:var(--text);">Sportradar Free Trial</strong><br>
+      Register at <a href="https://developer.sportradar.com" target="_blank">developer.sportradar.com</a> →
+      My Account → Applications → Create App → select a sport trial.<br>
+      Free trial: <strong style="color:var(--gold)">1,000 requests/month</strong> ·
+      Football, Basketball, Rugby & Cricket APIs included.
+    </div>
+
+    <div class="field">
+      <label id="keyLabel">Sportradar API Key</label>
+      <div class="api-key-input-wrap">
+        <input type="password" id="apiKeyInput" placeholder="Paste your Sportradar key here" autocomplete="off">
+        <button class="api-key-toggle" onclick="toggleKeyVisibility()">Show</button>
+      </div>
+    </div>
+    <div id="apiKeyStatus" style="display:none"></div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn btn-outline btn-sm" style="flex:1" onclick="testApiKey()">🔍 Test Key</button>
+      <button class="btn btn-green" style="flex:2" onclick="saveApiKey()">✅ Save & Apply</button>
+    </div>
+
+    <!-- Sportradar sport toggles -->
+    <div id="srSportToggles" style="margin-top:14px;padding-top:12px;border-top:1px solid #1e2d45;">
+      <div style="font-size:.75rem;color:var(--text2);margin-bottom:8px;">Active Sports (Sportradar)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <label class="sport-toggle-row"><input type="checkbox" id="srFootball" checked onchange="saveSRPrefs()"> ⚽ Football</label>
+        <label class="sport-toggle-row"><input type="checkbox" id="srBasketball" checked onchange="saveSRPrefs()"> 🏀 Basketball</label>
+        <label class="sport-toggle-row"><input type="checkbox" id="srRugby" checked onchange="saveSRPrefs()"> 🏉 Rugby</label>
+        <label class="sport-toggle-row"><input type="checkbox" id="srCricket" checked onchange="saveSRPrefs()"> 🏏 Cricket</label>
+      </div>
+    </div>
+
+    <!-- Proxy URL -->
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid #1e2d45;">
+      <div style="font-size:.75rem;color:var(--text2);margin-bottom:6px;">🔁 Vercel Proxy URL <span style="color:var(--green);font-size:.65rem;">(bypasses CORS)</span></div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <input type="text" id="proxyUrlInput" placeholder="https://your-app.vercel.app"
+          style="flex:1;padding:7px 10px;background:var(--card);border:1px solid #2a3a55;border-radius:8px;color:var(--text);font-size:.78rem;outline:none;"
+          oninput="saveProxyUrl(this.value)">
+        <button class="settings-btn" onclick="testProxy()" style="white-space:nowrap;">🔍 Test</button>
+      </div>
+      <div id="proxyStatus" style="font-size:.7rem;margin-top:5px;color:var(--text2);">Leave blank to fetch directly (needs CORS extension).</div>
+    </div>
+
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid #1e2d45;">
+      <div style="font-size:.75rem;color:var(--text2);margin-bottom:6px;">Current Source · Key</div>
+      <div id="currentKeyDisplay" style="font-size:.78rem;color:var(--gold);font-family:monospace;word-break:break-all;"></div>
+    </div>
+  </div>
+</div>
+  <div class="bonus-box">
+    <div class="coin">🎉</div>
+    <h2>KARIBU PATAPATA!</h2>
+    <div style="color:var(--text2);font-size:.82rem;">Welcome Bonus Credited:</div>
+    <div class="amount">KES 500</div>
+    <p>Your KES 500 welcome bonus has been added. Start betting now!</p>
+    <button class="btn btn-gold btn-full" onclick="document.getElementById('bonusPopup').classList.remove('open');showPage('sports')">BET ON SPORTS ⚽</button>
+  </div>
+</div>
+
+<script>
+// ===== CONFIG — SPORTRADAR DATA LAYER =====
+// Sportradar free trial: https://developer.sportradar.com
+// API-Football fallback: https://dashboard.api-football.com/register
+
+// ── Sportradar endpoints ──
+const SR = {
+  football: {
+    base: 'https://api.sportradar.com/soccer/trial/v4/en',
+    liveSchedule: '/schedules/live/schedule.json',
+    daySchedule: (date) => `/schedules/${date}/schedule.json`,
+    sportEvent: (id) => `/sport_events/${id}/summary.json`,
+  },
+  basketball: {
+    base: 'https://api.sportradar.com/nba/trial/v8/en',
+    liveSchedule: '/games/live/schedule.json',
+    daySchedule: (date) => `/games/${date}/schedule.json`,
+  },
+  rugby: {
+    base: 'https://api.sportradar.com/rugby-union/trial/v3/en',
+    liveSchedule: '/schedules/live/schedule.json',
+    daySchedule: (date) => `/schedules/${date}/schedule.json`,
+  },
+  cricket: {
+    base: 'https://api.sportradar.com/cricket-t2/trial/v2/en',
+    liveSchedule: '/schedules/live/schedule.json',
+    daySchedule: (date) => `/schedules/${date}/schedule.json`,
+  },
+};
+
+// ── API-Football fallback endpoints ──
+const AF_BASE = 'https://v3.football.api-sports.io';
+const AF_LEAGUES = {
+  football: [39,135,140,78,2,3,848],
+  basketball: [120,116,117,118,119],
+  rugby: [5,16,22],
+  cricket: [1,5,8],
+};
+
+// ── League tab config ──
+const LEAGUES = {
+  live:       { name:'🔴 Live Now',        sport:'football', live:true  },
+  today:      { name:'⚽ Football Today',  sport:'football', live:false },
+  tomorrow:   { name:'⏭ Tomorrow',        sport:'football', live:false, tomorrow:true },
+  pl:         { name:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League',sport:'football', live:false, srTournament:'sr:tournament:17' },
+  laliga:     { name:'🇪🇸 La Liga',         sport:'football', live:false, srTournament:'sr:tournament:8'  },
+  seriea:     { name:'🇮🇹 Serie A',         sport:'football', live:false, srTournament:'sr:tournament:23' },
+  bundesliga: { name:'🇩🇪 Bundesliga',      sport:'football', live:false, srTournament:'sr:tournament:35' },
+  kpl:        { name:'🇰🇪 KPL Kenya',       sport:'football', live:false, afIds:[741] },
+  ucl:        { name:'⭐ Champions League', sport:'football', live:false, srTournament:'sr:tournament:7'  },
+  basketball: { name:'🏀 Basketball',       sport:'basketball',live:false },
+  rugby:      { name:'🏉 Rugby',            sport:'rugby',    live:false },
+  cricket:    { name:'🏏 Cricket',          sport:'cricket',  live:false },
+};
+
+const CALENDAR_AF_IDS = [39,140,135,78,2,741];
+
+// ── State vars ──
+let currentSport = 'live';
+let apiMatches = {};
+let oddsCache = {};
+let betSlip = [];
+let autoRefreshTimer = null;
+let countdownTimer = null;
+let countdownSecs = 0;
+let scoreAlerts = {};
+let alertCheckTimer = null;
+let calendarVisible = false;
+let dataSource = localStorage.getItem('patapata_source') || 'sportradar'; // 'sportradar' | 'apifootball'
+
+// ── Key helpers ──
+const DEFAULT_SR_KEY = 'diP6HEgrmTyu2Js90KnlT4B0TRPZSzbCVKdteII5';
+function getSRKey()  { return localStorage.getItem('patapata_sr_key')  || DEFAULT_SR_KEY; }
+function getAFKey()  { return localStorage.getItem('patapata_af_key')  || ''; }
+function getApiKey() { return dataSource==='sportradar' ? getSRKey() : getAFKey(); }
+
+function saveSRPrefs(){
+  ['Football','Basketball','Rugby','Cricket'].forEach(s=>{
+    const el = document.getElementById('sr'+s);
+    if(el) localStorage.setItem('patapata_sr_'+s.toLowerCase(), el.checked?'1':'0');
+  });
+}
+function srSportEnabled(s){ return localStorage.getItem('patapata_sr_'+s) !== '0'; }
+
+function setDataSource(src){
+  dataSource = src;
+  localStorage.setItem('patapata_source', src);
+  document.getElementById('srcBtnSR').classList.toggle('active', src==='sportradar');
+  document.getElementById('srcBtnAF').classList.toggle('active', src==='apifootball');
+  document.getElementById('srSportToggles').style.display = src==='sportradar' ? 'block' : 'none';
+  const isAF = src === 'apifootball';
+  document.getElementById('keyLabel').textContent = isAF ? 'API-Football Key' : 'Sportradar API Key';
+  document.getElementById('apiKeyInput').placeholder = isAF ? 'Paste your API-Football key' : 'Paste your Sportradar key';
+  document.getElementById('keyInfoBox').innerHTML = isAF
+    ? '<strong style="color:var(--text);">API-Football (api-sports.io)</strong><br>Get a free key at <a href="https://dashboard.api-football.com/register" target="_blank">dashboard.api-football.com</a><br>Free tier: <strong style="color:var(--gold)">100 requests/day</strong> · Football, Basketball, Rugby, Cricket.'
+    : '<strong style="color:var(--text);">Sportradar Free Trial</strong><br>Register at <a href="https://developer.sportradar.com" target="_blank">developer.sportradar.com</a> → My Account → Applications → Create App → select trial sport.<br>Free trial: <strong style="color:var(--gold)">1,000 req/month</strong> · Football, Basketball, Rugby & Cricket APIs.';
+  updateCurrentKeyDisplay();
+}
+
+// ===== STATE =====
+let state = {
+  loggedIn:false, user:null, balance:0, bonusBalance:0,
+  transactions:[], stats:{games:0,wins:0,bestMult:1,sportBets:0}
+};
+
+// ===== API KEY SETTINGS =====
+function toggleKeyVisibility(){
+  const inp = document.getElementById('apiKeyInput');
+  const btn = inp.nextElementSibling;
+  if(inp.type==='password'){ inp.type='text'; btn.textContent='Hide'; }
+  else { inp.type='password'; btn.textContent='Show'; }
+}
+function setApiKeyStatus(type, msg){
+  const el=document.getElementById('apiKeyStatus');
+  el.style.display='flex'; el.className='api-key-status '+type;
+  el.innerHTML=(type==='valid'?'✅':type==='invalid'?'❌':'⏳')+' '+msg;
+}
+function updateCurrentKeyDisplay(){
+  const key=getApiKey();
+  const src=dataSource==='sportradar'?'📡 Sportradar':'⚽ API-Football';
+  const el=document.getElementById('currentKeyDisplay');
+  if(el) el.innerHTML=`<span style="color:var(--text2);font-size:.7rem;">${src} · </span>`+(key?key.slice(0,6)+'••••••••••'+key.slice(-4):'<span style="color:var(--red)">No key set — using demo data</span>');
+}
+async function testApiKey(){
+  const key=document.getElementById('apiKeyInput').value.trim();
+  if(!key){ setApiKeyStatus('invalid','Enter a key first'); return; }
+  setApiKeyStatus('checking','Testing key...');
+  try {
+    if(dataSource==='sportradar'){
+      // Test against SR football schedule endpoint
+      const url=`${SR.football.base}/schedules/${getDateStr()}/schedule.json?api_key=${key}`;
+      const res=await fetch(url);
+      if(res.status===401||res.status===403) throw new Error('invalid_token');
+      if(res.status===200||res.status===304){
+        setApiKeyStatus('valid','✅ Sportradar key valid! Live data active for all sports.');
+      } else { setApiKeyStatus('invalid',`Unexpected status ${res.status}`); }
+    } else {
+      const res=await fetch(`${AF_BASE}/status`,{headers:{'x-apisports-key':key}});
+      const data=await res.json();
+      if(data.response?.subscription){
+        const r=data.response.requests;
+        setApiKeyStatus('valid',`✅ Valid! Plan: <strong>${data.response.subscription.plan}</strong> · ${r.current}/${r.limit_day} today`);
+      } else { setApiKeyStatus('invalid','Key rejected. Check and retry.'); }
+    }
+  } catch(e){
+    if(e.message==='invalid_token') setApiKeyStatus('invalid','Invalid key — rejected by Sportradar');
+    else setApiKeyStatus('invalid','Network error — CORS may block direct browser calls');
+  }
+}
+async function saveApiKey(){
+  const key=document.getElementById('apiKeyInput').value.trim();
+  if(!key){ setApiKeyStatus('invalid','Please enter a key'); return; }
+  const lsKey = dataSource==='sportradar' ? 'patapata_sr_key' : 'patapata_af_key';
+  localStorage.setItem(lsKey, key);
+  apiMatches={}; oddsCache={};
+  updateCurrentKeyDisplay();
+  closeModal('apiSettingsModal');
+  showToast(`✅ ${dataSource==='sportradar'?'Sportradar':'API-Football'} key saved! Loading matches...`,'success');
+  setTimeout(()=>loadMatches(currentSport), 400);
+}
+function openApiSettings(){
+  setDataSource(dataSource);
+  document.getElementById('apiKeyInput').value = getApiKey();
+  ['Football','Basketball','Rugby','Cricket'].forEach(s=>{
+    const el=document.getElementById('sr'+s);
+    if(el) el.checked = srSportEnabled(s.toLowerCase());
+  });
+  // Sync proxy URL
+  const proxyInp = document.getElementById('proxyUrlInput');
+  if(proxyInp) proxyInp.value = localStorage.getItem('patapata_proxy_url') || '';
+  updateCurrentKeyDisplay();
+  openModal('apiSettingsModal');
+}
+
+function saveProxyUrl(val){
+  const url = val.trim().replace(/\/$/, ''); // strip trailing slash
+  localStorage.setItem('patapata_proxy_url', url);
+  // Update the runtime constant
+  window._proxyBase = url;
+}
+
+async function testProxy(){
+  const inp = document.getElementById('proxyUrlInput');
+  const statusEl = document.getElementById('proxyStatus');
+  const url = (inp.value||'').trim().replace(/\/$/,'');
+  if(!url){ statusEl.innerHTML='<span style="color:var(--red)">Enter your Vercel URL first.</span>'; return; }
+  statusEl.innerHTML='<span style="color:var(--gold)">⏳ Testing proxy...</span>';
+  try {
+    const res = await fetch(url+'/api/health');
+    if(res.ok){
+      const data = await res.json();
+      statusEl.innerHTML=`<span style="color:var(--green)">✅ Proxy online · ${data.service||'PataPata Proxy'}</span>`;
+      saveProxyUrl(url);
+    } else {
+      statusEl.innerHTML=`<span style="color:var(--red)">❌ Proxy returned ${res.status}. Check the URL.</span>`;
+    }
+  } catch(e){
+    statusEl.innerHTML=`<span style="color:var(--red)">❌ Could not reach proxy: ${e.message}</span>`;
+  }
+}
+
+// ===== FETCH LAYER =====
+function setApiStatus(status, text){
+  const dot=document.getElementById('apiDot'), txt=document.getElementById('apiStatusText');
+  dot.className='api-dot '+status; txt.textContent=text;
+  txt.style.color=status==='live'?'var(--green)':status==='error'?'var(--red)':'var(--gold)';
+}
+function getDateStr(offsetDays=0){
+  const d=new Date(); d.setDate(d.getDate()+offsetDays);
+  return d.toISOString().split('T')[0];
+}
+
+// ── Sportradar fetch — routes through Vercel CORS proxy ──
+// Set PROXY_BASE to your deployed Vercel URL e.g. https://patapata-proxy.vercel.app
+async function fetchSR(url){
+  const key = getSRKey();
+  const PROXY_BASE = (localStorage.getItem('patapata_proxy_url') || '').trim().replace(/\/$/,'');
+
+  if(PROXY_BASE){
+    // Route through proxy — no CORS issues
+    // url is like https://api.sportradar.com/soccer/trial/v4/en/schedules/live/schedule.json
+    // Extract sport and path from URL
+    const sportMap = {
+      '/soccer/':     'football',
+      '/nba/':        'basketball',
+      '/rugby-union/':'rugby',
+      '/cricket-t2/': 'cricket',
+    };
+    let sport = 'football';
+    for(const [seg, s] of Object.entries(sportMap)){
+      if(url.includes(seg)){ sport = s; break; }
+    }
+    // Extract path after the base (everything from the 4th slash onward)
+    const parts = url.replace('https://api.sportradar.com','').split('/');
+    // parts[0]='', [1]=sport, [2]=trial, [3]=version, [4]=lang, rest=path
+    const path = '/' + parts.slice(5).join('/').split('?')[0];
+    const proxyUrl = `${PROXY_BASE}/api/sr?sport=${sport}&path=${encodeURIComponent(path)}&key=${key}`;
+    const res = await fetch(proxyUrl);
+    if(res.status===401||res.status===403) throw new Error('invalid_token');
+    if(!res.ok) throw new Error('Proxy HTTP '+res.status);
+    return res.json();
+  } else {
+    // Direct fetch (works if CORS is allowed or using browser extension)
+    const sep = url.includes('?')?'&':'?';
+    const res = await fetch(url+sep+'api_key='+key);
+    if(res.status===401||res.status===403) throw new Error('invalid_token');
+    if(!res.ok) throw new Error('SR HTTP '+res.status);
+    return res.json();
+  }
+}
+
+// ── API-Football fetch ──
+async function fetchAF(endpoint, baseOverride){
+  const key=getAFKey();
+  const base=baseOverride||AF_BASE;
+  const res=await fetch(base+endpoint,{headers:{'x-apisports-key':key,'x-rapidapi-key':key,'x-rapidapi-host':base.replace('https://','').split('/')[0]}});
+  if(!res.ok) throw new Error('AF HTTP '+res.status);
+  const data=await res.json();
+  if(data.errors&&Object.keys(data.errors).length){
+    const e=data.errors;
+    if(e.token||e.key||e.authorization) throw new Error('invalid_token');
+    throw new Error('AF error: '+Object.values(e).join(', '));
+  }
+  return data;
+}
+
+// ── Normalise Sportradar sport_event → fixture-shaped object ──
+function normalizeSR(evt, sport){
+  try {
+    const sc=evt.sport_event_status||{};
+    const home=evt.sport_event?.competitors?.find(c=>c.qualifier==='home')||{};
+    const away=evt.sport_event?.competitors?.find(c=>c.qualifier==='away')||{};
+    const tour=evt.sport_event?.tournament||evt.sport_event?.competition||{};
+    const country=tour.category?.name||tour.name||'';
+    const statusMap={not_started:'NS',live:'LIVE',inprogress:'1H',halftime:'HT',ended:'FT',closed:'FT',suspended:'SUSP',postponed:'PST',cancelled:'CANC'};
+    const rawStatus=sc.status||'not_started';
+    const shortStatus=statusMap[rawStatus]||rawStatus.slice(0,2).toUpperCase();
+    const homeScore=sc.home_score??sc.home_points??null;
+    const awayScore=sc.away_score??sc.away_points??null;
+    const elapsed=sc.clock?.played||null;
+    const dateStr=evt.sport_event?.scheduled||new Date().toISOString();
+    return {
+      fixture:{ id:evt.sport_event?.id||Math.random(), date:dateStr, status:{short:shortStatus,elapsed}, venue:{} },
+      league:{ id:tour.id||0, name:tour.name||sport, country, logo:'' },
+      teams:{ home:{id:home.id||0,name:home.name||'Home',logo:''}, away:{id:away.id||0,name:away.name||'Away',logo:''} },
+      goals:{ home:homeScore, away:awayScore },
+      _sport:sport, _source:'sportradar'
+    };
+  } catch(e){ return null; }
+}
+
+// ── Normalise API-Football non-football response ──
+function normalizeNonFootball(g, sport){
+  try {
+    const home=g.teams?.home||g.home||{};
+    const away=g.teams?.away||g.away||{};
+    const scores=g.scores||g.score||{};
+    const homeScore=scores.home?.total??scores.home??g.home_score??null;
+    const awayScore=scores.away?.total??scores.away??g.away_score??null;
+    const status=g.status?.short||'NS';
+    const elapsed=g.status?.timer??g.status?.elapsed??null;
+    return {
+      fixture:{id:g.id,date:g.date||g.time||new Date().toISOString(),status:{short:status,elapsed},venue:{}},
+      league:{id:g.league?.id||0,name:g.league?.name||sport,country:g.country?.name||'',logo:g.league?.logo||''},
+      teams:{home:{id:home.id||0,name:home.name||'Home',logo:home.logo||''},away:{id:away.id||0,name:away.name||'Away',logo:away.logo||''}},
+      goals:{home:homeScore,away:awayScore},
+      _sport:sport
+    };
+  } catch(e){ return null; }
+}
+
+async function loadMatches(tabKey){
+  const cfg = LEAGUES[tabKey];
+  const sport = cfg.sport || 'football';
+  setApiStatus('loading', `Fetching ${sport} via ${dataSource==='sportradar'?'Sportradar':'API-Football'}...`);
+  document.getElementById('refreshBtn').classList.add('spinning');
+  showSkeletons();
+
+  try {
+    let fixtures = [];
+    const date = cfg.tomorrow ? getDateStr(1) : getDateStr(0);
+    const season = new Date().getFullYear();
+
+    if(dataSource === 'sportradar' && getSRKey()){
+      fixtures = await loadFromSportradar(cfg, sport, date);
+    } else {
+      fixtures = await loadFromAF(cfg, sport, date, season);
+    }
+
+    apiMatches[tabKey] = fixtures;
+    const srcBadge = dataSource==='sportradar' ? '📡 SR' : '⚽ AF';
+    setApiStatus('live', `${fixtures.length} matches · ${srcBadge}`);
+    document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});
+    renderAPIMatches(fixtures, sport);
+  } catch(err){
+    console.error('PataPata load error:', err.message);
+    if(err.message==='invalid_token'){
+      setApiStatus('error','Invalid key — tap ⚙ to update');
+      showToast('🔑 Invalid API key. Tap ⚙ to update.','error');
+    } else if(err.message.includes('Failed to fetch')||err.message.includes('NetworkError')){
+      setApiStatus('error','Network blocked — showing demo data');
+      showToast('⚠️ Network error. Showing demo data.','info');
+    } else {
+      setApiStatus('error','Error — '+err.message.slice(0,35));
+    }
+    renderFallback(tabKey);
+  }
+  document.getElementById('refreshBtn').classList.remove('spinning');
+}
+
+// ── Load from Sportradar ──
+async function loadFromSportradar(cfg, sport, date){
+  const srCfg = SR[sport];
+  if(!srCfg) return [];
+  let evts = [];
+  if(cfg.live){
+    const data = await fetchSR(srCfg.base + srCfg.liveSchedule);
+    evts = data.sport_events || data.schedules || [];
+  } else {
+    // If a specific tournament, filter; otherwise pull full day
+    const data = await fetchSR(srCfg.base + srCfg.daySchedule(date));
+    evts = data.sport_events || data.schedules || [];
+    if(cfg.srTournament){
+      evts = evts.filter(e => {
+        const tid = e.sport_event?.tournament?.id || e.sport_event?.competition?.id || '';
+        return tid === cfg.srTournament;
+      });
+    }
+  }
+  return evts.map(e => normalizeSR(e, sport)).filter(Boolean);
+}
+
+// ── Load from API-Football ──
+async function loadFromAF(cfg, sport, date, season){
+  let ids;
+  if(cfg.afIds){
+    ids = cfg.afIds;
+  } else {
+    ids = AF_LEAGUES[sport] || AF_LEAGUES.football;
+  }
+  if(sport==='football'){
+    if(cfg.live){
+      const data = await fetchAF('/fixtures?live=all');
+      return data.response || [];
+    }
+    const promises = ids.map(id =>
+      fetchAF(`/fixtures?league=${id}&date=${date}&season=${season}`)
+        .then(d=>d.response||[]).catch(()=>[])
+    );
+    return (await Promise.all(promises)).flat();
+  } else {
+    // basketball / rugby / cricket via api-sports.io sport-specific APIs
+    const basesMap = {
+      basketball:'https://v1.basketball.api-sports.io',
+      rugby:'https://v1.rugby.api-sports.io',
+      cricket:'https://v1.cricket.api-sports.io',
+    };
+    const base = basesMap[sport] || AF_BASE;
+    const promises = ids.map(id =>
+      fetchAF(`/games?league=${id}&date=${date}&season=${season}`, base)
+        .then(d=>(d.response||[]).map(g=>normalizeNonFootball(g,sport))).catch(()=>[])
+    );
+    return (await Promise.all(promises)).flat().filter(Boolean);
+  }
+}
+
+function renderAPIMatches(fixtures, sport){
+  const container = document.getElementById('matchesContainer');
+  container.innerHTML = '';
+  sport = sport || 'football';
+
+  if(!fixtures.length){
+    const sportEmoji = {football:'⚽',basketball:'🏀',rugby:'🏉',cricket:'🏏'}[sport]||'🏟';
+    container.innerHTML = `<div class="no-matches"><div class="nm-icon">${sportEmoji}</div><p>No ${sport} matches found today.</p><p style="margin-top:6px;font-size:.75rem;">Try another tab or check back later.</p></div>`;
+    return;
+  }
+
+  // Group by league
+  const grouped = {};
+  fixtures.forEach(f => {
+    const key = f.league.id;
+    if(!grouped[key]) grouped[key] = { name: f.league.name, country: f.league.country, logo: f.league.logo, matches: [], sport };
+    grouped[key].matches.push(f);
+  });
+
+  const sportBadgeMap = {football:'football',basketball:'basketball',rugby:'rugby',cricket:'cricket'};
+  Object.values(grouped).forEach(lg => {
+    const lh = document.createElement('div');
+    lh.className = 'league-header';
+    lh.innerHTML = `
+      ${lg.logo ? `<img src="${lg.logo}" style="width:22px;height:22px;object-fit:contain;" onerror="this.style.display='none'">` : ''}
+      <span class="league-name">${lg.name}${lg.country?' · '+lg.country:''}</span>
+      <span class="sport-type-badge ${sportBadgeMap[sport]||'football'}">${{football:'⚽',basketball:'🏀',rugby:'🏉',cricket:'🏏'}[sport]||'🏟'} ${sport}</span>
+      <span class="league-count">${lg.matches.length}</span>`;
+    container.appendChild(lh);
+
+    lg.matches.forEach(f => {
+      const card = buildAPIMatchCard(f);
+      if(card) container.appendChild(card);
+    });
+  });
+}
+
+function buildAPIMatchCard(f){
+  const fix = f.fixture;
+  const home = f.teams.home;
+  const away = f.teams.away;
+  const goals = f.goals;
+  const status = fix.status;
+
+  const isLive = ['1H','HT','2H','ET','BT','P','LIVE','INT'].includes(status.short);
+  const isFinished = ['FT','AET','PEN'].includes(status.short);
+  const isScheduled = ['NS','TBD'].includes(status.short);
+
+  // Format time
+  let timeLabel = '';
+  if(isLive) timeLabel = `LIVE ${status.elapsed ? status.elapsed+"'" : ''}`;
+  else if(isFinished) timeLabel = `FT`;
+  else {
+    const d = new Date(fix.date);
+    timeLabel = d.toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  const scoreStr = (goals.home !== null && goals.away !== null) ? `${goals.home} - ${goals.away}` : 'VS';
+  const isVS = scoreStr === 'VS';
+
+  // Use real odds from cache if available, otherwise generate
+  const cachedOdds = oddsCache[fix.id];
+  const odds = cachedOdds || generateOdds(home.name, away.name, fix.id);
+  const oddsSource = cachedOdds ? 'real' : 'gen';
+  const oddsBadge = isScheduled
+    ? `<span class="odds-source-badge ${oddsSource}">${oddsSource==='real'?'📊 Real Odds':'⚙ Est. Odds'}</span>`
+    : '';
+
+  const slipH = betSlip.find(s=>s.matchId===String(fix.id)&&s.pick==='H');
+  const slipD = betSlip.find(s=>s.matchId===String(fix.id)&&s.pick==='D');
+  const slipA = betSlip.find(s=>s.matchId===String(fix.id)&&s.pick==='A');
+
+  const card = document.createElement('div');
+  card.className = 'match-card';
+
+  const matchLabel = escHtml(home.name)+' vs '+escHtml(away.name);
+  const isAlerted = !!scoreAlerts[String(fix.id)];
+  const alertBtn = isLive
+    ? `<button onclick="addScoreAlert('${fix.id}','${matchLabel}','${(goals.home??'?')+'-'+(goals.away??'?')}')"
+        style="background:none;border:none;cursor:pointer;font-size:.88rem;padding:0 4px;opacity:${isAlerted?1:.4};" title="${isAlerted?'Remove alert':'Track score'}">${isAlerted?'🔔':'🔕'}</button>`
+    : '';
+  const topBadge = isLive
+    ? `<span class="match-live-badge">● ${timeLabel}</span>${alertBtn}`
+    : isFinished
+    ? `<span class="match-time-badge">✅ ${timeLabel}</span>`
+    : `<span class="match-time-badge">🕐 ${timeLabel}</span>`;
+
+  const scoreClass = isLive ? 'live-score' : isVS ? 'vs' : '';
+
+  card.innerHTML = `
+    <div class="match-top">${topBadge}<span style="font-size:.68rem;color:var(--text2)">1X2${oddsBadge}</span></div>
+    <div class="match-body">
+      <div class="team-info">
+        <img src="${home.logo}" class="team-logo-img" onerror="this.outerHTML='<div class=team-logo-fallback>${home.name[0]}</div>'">
+        <div class="team-name">${home.name}</div>
+      </div>
+      <div class="match-score ${scoreClass}">${scoreStr}</div>
+      <div class="team-info">
+        <img src="${away.logo}" class="team-logo-img" onerror="this.outerHTML='<div class=team-logo-fallback>${away.name[0]}</div>'">
+        <div class="team-name">${away.name}</div>
+      </div>
+    </div>
+    <div class="odds-row" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="odd-btn ${slipH?'selected':''}" onclick="toggleOdd('${fix.id}','H','${escHtml(home.name)} Win',${odds.h},'${escHtml(home.name)} vs ${escHtml(away.name)}')">
+        <div class="odd-label">1 Home</div><div class="odd-val">${odds.h.toFixed(2)}</div>
+      </div>
+      <div class="odd-btn ${slipD?'selected':''}" onclick="toggleOdd('${fix.id}','D','Draw',${odds.d},'${escHtml(home.name)} vs ${escHtml(away.name)}')">
+        <div class="odd-label">X Draw</div><div class="odd-val">${odds.d.toFixed(2)}</div>
+      </div>
+      <div class="odd-btn ${slipA?'selected':''}" onclick="toggleOdd('${fix.id}','A','${escHtml(away.name)} Win',${odds.a},'${escHtml(home.name)} vs ${escHtml(away.name)}')">
+        <div class="odd-label">2 Away</div><div class="odd-val">${odds.a.toFixed(2)}</div>
+      </div>
+    </div>`;
+
+  // Hide odds for finished matches
+  if(isFinished){
+    card.querySelectorAll('.odd-btn').forEach(b=>{
+      b.style.opacity='0.4'; b.style.pointerEvents='none';
+    });
+  }
+
+  return card;
+}
+
+function escHtml(s){ return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+function generateOdds(home, away, fixtureId){
+  // Seed from fixture ID for consistency
+  const seed = (fixtureId % 1000) / 1000;
+  const homeStr = seed * 0.4;
+  const base = 1.4 + homeStr;
+  const h = Math.round((base + Math.random()*0.5)*100)/100;
+  const a = Math.round((base + 0.3 + Math.random()*0.8)*100)/100;
+  const d = Math.round((3.0 + Math.random()*0.8)*100)/100;
+  return { h: Math.max(1.3,h), d: Math.max(2.8,d), a: Math.max(1.5,a) };
+}
+
+function showSkeletons(){
+  const c = document.getElementById('matchesContainer');
+  c.innerHTML = '';
+  for(let i=0;i<2;i++){
+    c.innerHTML += `<div class="skeleton skel-league"></div>`;
+    for(let j=0;j<3;j++) c.innerHTML += `<div class="skeleton skel-card"></div>`;
+  }
+}
+
+// Fallback static data if API fails
+function renderFallback(key){
+  const fallback = {
+    live:[
+      {id:'f1',home:'Man City',away:'Arsenal',hl:'🩵',al:'🔴',time:'LIVE 67\'',score:'1-1',h:1.90,d:3.40,a:4.10},
+      {id:'f2',home:'Real Madrid',away:'Barcelona',hl:'⚪',al:'🔵',time:'LIVE 45\'',score:'0-0',h:2.00,d:3.50,a:3.80},
+      {id:'f3',home:'Gor Mahia',away:'AFC Leopards',hl:'🟢',al:'🔵',time:'LIVE 30\'',score:'1-0',h:1.75,d:3.20,a:4.50},
+    ],
+    kpl:[
+      {id:'k1',home:'Gor Mahia',away:'AFC Leopards',hl:'🟢',al:'🔵',time:'Sat 16:00',score:null,h:1.75,d:3.20,a:4.50},
+      {id:'k2',home:'Tusker FC',away:'Bandari FC',hl:'🟡',al:'🔵',time:'Sun 14:00',score:null,h:1.60,d:3.50,a:5.50},
+      {id:'k3',home:'Wazito FC',away:'KCB FC',hl:'🔴',al:'🟡',time:'Mon 16:00',score:null,h:2.20,d:3.40,a:2.90},
+    ],
+    basketball:[
+      {id:'b1',home:'LA Lakers',away:'Golden State',hl:'💛',al:'💛',time:'Today 21:00',score:null,h:1.80,d:null,a:2.05},
+      {id:'b2',home:'Boston Celtics',away:'Miami Heat',hl:'🟢',al:'🔴',time:'Today 23:30',score:null,h:1.55,d:null,a:2.60},
+      {id:'b3',home:'Chicago Bulls',away:'Brooklyn Nets',hl:'🔴',al:'⚫',time:'Tomorrow 20:00',score:null,h:2.20,d:null,a:1.70},
+    ],
+    rugby:[
+      {id:'r1',home:'All Blacks',away:'South Africa',hl:'⚫',al:'🟢',time:'Sat 14:00',score:null,h:1.65,d:null,a:2.30},
+      {id:'r2',home:'England',away:'Australia',hl:'⚪',al:'🟡',time:'Sat 17:30',score:null,h:1.90,d:null,a:1.95},
+      {id:'r3',home:'France',away:'Ireland',hl:'🔵',al:'🟢',time:'Sun 15:00',score:null,h:2.10,d:null,a:1.80},
+    ],
+    cricket:[
+      {id:'c1',home:'India',away:'Australia',hl:'🔵',al:'🟡',time:'Today 09:30',score:null,h:1.70,d:3.50,a:2.20},
+      {id:'c2',home:'England',away:'Pakistan',hl:'⚪',al:'🟢',time:'Today 10:00',score:null,h:2.00,d:3.80,a:2.00},
+      {id:'c3',home:'Kenya XI',away:'Uganda XI',hl:'🔴',al:'🟡',time:'Sun 09:00',score:null,h:1.60,d:4.00,a:2.80},
+    ],
+  };
+  const data = fallback[key] || fallback['live'];
+  const c = document.getElementById('matchesContainer');
+  c.innerHTML = '';
+  const lh = document.createElement('div');
+  lh.className = 'league-header';
+  lh.innerHTML = `<span class="league-name">Showing Fallback Matches</span><span class="league-count">${data.length}</span>`;
+  c.appendChild(lh);
+  data.forEach(m=>{
+    const card = document.createElement('div'); card.className='match-card';
+    const slipH=betSlip.find(s=>s.matchId===m.id&&s.pick==='H');
+    const slipD=betSlip.find(s=>s.matchId===m.id&&s.pick==='D');
+    const slipA=betSlip.find(s=>s.matchId===m.id&&s.pick==='A');
+    card.innerHTML=`
+      <div class="match-top"><span class="${m.score?'match-live-badge':'match-time-badge'}">${m.score?'● '+m.time:m.time}</span><span style="font-size:.68rem;color:var(--text2)">1X2</span></div>
+      <div class="match-body">
+        <div class="team-info"><div class="team-logo-fallback">${m.hl}</div><div class="team-name">${m.home}</div></div>
+        <div class="match-score ${m.score?'live-score':'vs'}">${m.score||'VS'}</div>
+        <div class="team-info"><div class="team-logo-fallback">${m.al}</div><div class="team-name">${m.away}</div></div>
+      </div>
+      <div class="odds-row" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="odd-btn ${slipH?'selected':''}" onclick="toggleOdd('${m.id}','H','${m.home} Win',${m.h},'${m.home} vs ${m.away}')"><div class="odd-label">1 Home</div><div class="odd-val">${m.h.toFixed(2)}</div></div>
+        <div class="odd-btn ${slipD?'selected':''}" onclick="toggleOdd('${m.id}','D','Draw',${m.d},'${m.home} vs ${m.away}')"><div class="odd-label">X Draw</div><div class="odd-val">${m.d.toFixed(2)}</div></div>
+        <div class="odd-btn ${slipA?'selected':''}" onclick="toggleOdd('${m.id}','A','${m.away} Win',${m.a},'${m.home} vs ${m.away}')"><div class="odd-label">2 Away</div><div class="odd-val">${m.a.toFixed(2)}</div></div>
+      </div>`;
+    c.appendChild(card);
+  });
+}
+
+function selectSport(el, key){
+  document.querySelectorAll('.sport-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentSport = key;
+  calendarVisible = false;
+  document.getElementById('calendarPanel').style.display = 'none';
+  if(apiMatches[key]){ renderAPIMatches(apiMatches[key]); setApiStatus('live','Cached · '+(document.getElementById('lastUpdated').textContent||'')); }
+  else loadMatches(key);
+  clearAutoRefresh();
+  if(key==='live') startAutoRefresh();
+}
+
+function refreshMatches(){ delete apiMatches[currentSport]; loadMatches(currentSport); }
+
+// ── Free-tier friendly 5-minute auto-refresh with countdown ──
+const REFRESH_INTERVAL = 300; // 5 minutes in seconds
+function startAutoRefresh(){
+  clearAutoRefresh();
+  countdownSecs = REFRESH_INTERVAL;
+  updateCountdown();
+  countdownTimer = setInterval(()=>{
+    countdownSecs--;
+    updateCountdown();
+    if(countdownSecs <= 0){
+      countdownSecs = REFRESH_INTERVAL;
+      if(currentSport==='live'){ delete apiMatches['live']; loadMatches('live'); }
+    }
+  }, 1000);
+}
+function clearAutoRefresh(){
+  if(countdownTimer){ clearInterval(countdownTimer); countdownTimer=null; }
+  const cd = document.getElementById('refreshCountdown');
+  if(cd) cd.style.display='none';
+}
+function updateCountdown(){
+  const cd = document.getElementById('refreshCountdown');
+  if(!cd) return;
+  const m = Math.floor(countdownSecs/60), s = countdownSecs%60;
+  cd.style.display = 'inline';
+  cd.textContent = m+':'+(s<10?'0':'')+s;
+}
+
+// ── 7-Day Fixtures Calendar ──
+async function showCalendar(){
+  calendarVisible = !calendarVisible;
+  document.querySelectorAll('.sport-tab').forEach(t=>t.classList.remove('active'));
+  const panel = document.getElementById('calendarPanel');
+  if(!calendarVisible){ panel.style.display='none'; return; }
+  panel.style.display='block';
+  document.getElementById('matchesContainer').innerHTML = '';
+  panel.innerHTML = '<div style="color:var(--text2);font-size:.78rem;padding:10px 0;">⏳ Loading 7-day calendar...</div>';
+  try {
+    const days = [];
+    for(let i=0;i<7;i++) days.push(getDateStr(i));
+    const key = getApiKey();
+    // Fetch fixtures for next 7 days (one call per day, football only)
+    const allFixtures = {};
+    days.forEach(d => allFixtures[d] = []);
+    // Batch: fetch today + each future day using Promise.all (max 7 API calls)
+    const yr = new Date().getFullYear();
+    const requests = days.map(date => {
+      if(dataSource==='sportradar' && getSRKey()){
+        return fetchSR(SR.football.base + SR.football.daySchedule(date))
+          .then(d => { allFixtures[date] = (d.sport_events||d.schedules||[]).map(e=>normalizeSR(e,'football')).filter(Boolean); })
+          .catch(()=>{});
+      } else {
+        return fetchAF('/fixtures?league=39&date='+date+'&season='+yr)
+          .then(d => { allFixtures[date] = d.response||[]; })
+          .catch(()=>{});
+      }
+    });
+    await Promise.all(requests);
+    renderCalendar(days, allFixtures);
+  } catch(e){
+    panel.innerHTML = '<div style="color:var(--red);font-size:.78rem;padding:8px;">Could not load calendar. Check your API key.</div>';
+  }
+}
+
+function renderCalendar(days, allFixtures){
+  const panel = document.getElementById('calendarPanel');
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  let html = '<div style="font-size:.78rem;color:var(--text);font-weight:700;margin-bottom:8px;">📅 7-Day Football Calendar (Premier League)</div>';
+  html += '<div class="cal-grid">';
+
+  days.forEach((dateStr, i) => {
+    const d = new Date(dateStr);
+    const fixtures = allFixtures[dateStr] || [];
+    const isToday = i === 0;
+    const dayName = isToday ? 'TODAY' : dayNames[d.getDay()];
+    const dateNum = d.getDate();
+    const month = monthNames[d.getMonth()];
+
+    html += `<div class="cal-day-col ${isToday?'active':''}" onclick="loadCalendarDay('${dateStr}')">`;
+    html += `<div class="cal-day-header">${dayName}<span class="cal-date">${dateNum} ${month}</span></div>`;
+    html += `<div class="cal-day-matches">`;
+    if(!fixtures.length){
+      html += `<div class="cal-match-pill" style="text-align:center;">—</div>`;
+    } else {
+      fixtures.slice(0,3).forEach(f => {
+        const status = f.fixture.status.short;
+        const isLive = ['1H','HT','2H','ET','P'].includes(status);
+        const time = isLive ? 'LIVE' : new Date(f.fixture.date).toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'});
+        const label = `${f.teams.home.name.slice(0,3)} v ${f.teams.away.name.slice(0,3)}`;
+        html += `<div class="cal-match-pill ${isLive?'live':i===0?'soon':''}">${time} ${label}</div>`;
+      });
+      if(fixtures.length > 3) html += `<div class="cal-match-pill" style="color:var(--green);">+${fixtures.length-3} more</div>`;
+    }
+    html += `</div></div>`;
+  });
+
+  html += '</div>';
+  html += `<div class="cal-legend"><span style="color:var(--red);">● Live</span><span style="color:var(--gold);">● Today</span><span>Click a day to load matches</span></div>`;
+  panel.innerHTML = html;
+}
+
+async function loadCalendarDay(dateStr){
+  calendarVisible = true;
+  currentSport = 'today';
+  document.getElementById('matchesContainer').innerHTML = '';
+  setApiStatus('loading', 'Loading '+dateStr+'...');
+  showSkeletons();
+  try {
+    const season = new Date().getFullYear();
+    const promises = dataSource==='sportradar' && getSRKey()
+      ? [fetchSR(SR.football.base+SR.football.daySchedule(dateStr)).then(d=>(d.sport_events||d.schedules||[]).map(e=>normalizeSR(e,'football')).filter(Boolean)).catch(()=>[])]
+      : CALENDAR_AF_IDS.map(id =>
+          fetchAF('/fixtures?league='+id+'&date='+dateStr+'&season='+season)
+            .then(d=>d.response||[]).catch(()=>[])
+        );
+    const results = await Promise.all(promises);
+    const fixtures = results.flat();
+    setApiStatus('live', fixtures.length+' matches on '+dateStr);
+    document.getElementById('lastUpdated').textContent = 'Cal: '+dateStr;
+    renderAPIMatches(fixtures);
+  } catch(e){
+    setApiStatus('error','Failed to load day');
+    renderFallback('today');
+  }
+}
+
+// ── Score Alerts ──
+let alertsVisible = false;
+function toggleAlerts(){
+  alertsVisible = !alertsVisible;
+  document.getElementById('alertsPanel').style.display = alertsVisible ? 'block' : 'none';
+  renderAlertsList();
+}
+function addScoreAlert(fixtureId, matchName, currentScore){
+  if(scoreAlerts[fixtureId]){ 
+    delete scoreAlerts[fixtureId]; 
+    showToast('🔕 Alert removed for '+matchName,'info');
+  } else {
+    scoreAlerts[fixtureId] = { match: matchName, lastScore: currentScore, fixtureId };
+    showToast('🔔 Alerting you on score changes: '+matchName,'success');
+    if(!alertCheckTimer) startAlertChecker();
+  }
+  renderAlertsList();
+  updateAlertBadge();
+}
+function renderAlertsList(){
+  const list = document.getElementById('alertsList');
+  const count = document.getElementById('alertCount');
+  const keys = Object.keys(scoreAlerts);
+  if(!list) return;
+  if(!keys.length){
+    list.innerHTML = '<div style="color:var(--text2);font-size:.75rem;padding:4px 0;">No active alerts. Tap 🔔 on a live match to track it.</div>';
+    count.textContent = 'No active alerts';
+    return;
+  }
+  count.textContent = keys.length+' match'+(keys.length>1?'es':'');
+  list.innerHTML = keys.map(id => {
+    const a = scoreAlerts[id];
+    return `<div class="alert-item">
+      <div><div class="al-match">🔔 ${a.match}</div><div style="font-size:.68rem;color:var(--text2);margin-top:2px;">Tracking score changes</div></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="al-score">${a.lastScore||'—'}</span>
+        <button class="al-remove" onclick="addScoreAlert('${id}','${a.match.replace(/'/,"\'")}','${a.lastScore}')">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function updateAlertBadge(){
+  const badge = document.getElementById('alertBadge');
+  const btn = document.getElementById('alertBellBtn');
+  const n = Object.keys(scoreAlerts).length;
+  if(badge){
+    badge.style.display = n>0 ? 'flex' : 'none';
+    badge.textContent = n;
+  }
+  if(btn) btn.style.color = n>0 ? 'var(--gold)' : '';
+}
+function startAlertChecker(){
+  alertCheckTimer = setInterval(async ()=>{
+    const ids = Object.keys(scoreAlerts);
+    if(!ids.length){ clearInterval(alertCheckTimer); alertCheckTimer=null; return; }
+    try {
+      const data = dataSource==='sportradar' && getSRKey()
+        ? await fetchSR(SR.football.base+SR.football.liveSchedule).then(d=>({response:(d.sport_events||d.schedules||[]).map(e=>normalizeSR(e,'football')).filter(Boolean)}))
+        : await fetchAF('/fixtures?live=all');
+      const fixtures = data.response || [];
+      fixtures.forEach(f => {
+        const id = String(f.fixture.id);
+        if(!scoreAlerts[id]) return;
+        const newScore = (f.goals.home??'?')+' - '+(f.goals.away??'?');
+        const old = scoreAlerts[id].lastScore;
+        if(old && old !== newScore){
+          showScoreAlert(scoreAlerts[id].match, old, newScore);
+          scoreAlerts[id].lastScore = newScore;
+          renderAlertsList();
+        } else if(!old){
+          scoreAlerts[id].lastScore = newScore;
+        }
+      });
+    } catch(e){}
+  }, 60000); // check every 60s to save API quota
+}
+function showScoreAlert(match, oldScore, newScore){
+  const el = document.createElement('div');
+  el.className = 'alert-toast';
+  el.innerHTML = `⚽ <strong>GOAL!</strong> ${match}: ${oldScore} → <strong>${newScore}</strong>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 4000);
+}
+
+// ===== BET SLIP =====
+function toggleOdd(matchId, pick, label, odd, match){
+  if(!state.loggedIn){ openModal('loginModal'); return; }
+  matchId = String(matchId);
+  const idx = betSlip.findIndex(s=>s.matchId===matchId&&s.pick===pick);
+  const sameMatch = betSlip.findIndex(s=>s.matchId===matchId);
+  if(idx>=0) betSlip.splice(idx,1);
+  else { if(sameMatch>=0) betSlip.splice(sameMatch,1); betSlip.push({matchId,pick,label,odd,match}); }
+  updateSlipFab();
+  // Re-render just the odds buttons without full reload
+  rerenderMatchOdds(matchId);
+  updateSlipSummary();
+}
+
+function rerenderMatchOdds(matchId){
+  // Reload full matches to reflect selected state
+  if(apiMatches[currentSport]) renderAPIMatches(apiMatches[currentSport]);
+  else renderFallback(currentSport);
+}
+
+function updateSlipFab(){
+  document.getElementById('slipCount').textContent = betSlip.length;
+  document.getElementById('betslipFab').style.display = betSlip.length>0?'flex':'none';
+}
+function openBetSlip(){ renderSlipItems(); updateSlipSummary(); document.getElementById('betslipModal').classList.add('open'); }
+function closeBetSlip(){ document.getElementById('betslipModal').classList.remove('open'); }
+
+function renderSlipItems(){
+  const c=document.getElementById('slipItems'); c.innerHTML='';
+  if(!betSlip.length){ c.innerHTML='<div style="text-align:center;color:var(--text2);padding:16px;font-size:.82rem">No selections. Go add matches!</div>'; return; }
+  betSlip.forEach((s,i)=>{
+    const d=document.createElement('div'); d.className='slip-item';
+    d.innerHTML=`<div class="slip-match">${s.match}</div><div class="slip-pick">${s.label} — <span class="slip-odd">${s.odd.toFixed(2)}</span></div><button class="slip-remove" onclick="removeSlip(${i})">✕</button>`;
+    c.appendChild(d);
+  });
+}
+function removeSlip(i){ betSlip.splice(i,1); updateSlipFab(); renderSlipItems(); updateSlipSummary(); }
+function clearSlip(){ betSlip=[]; updateSlipFab(); renderSlipItems(); updateSlipSummary(); }
+
+function updateSlipSummary(){
+  const stake=parseFloat(document.getElementById('slipStake')?.value)||0;
+  if(!betSlip.length){ document.getElementById('slipSummary').innerHTML='<div style="color:var(--text2);font-size:.8rem;text-align:center">Add selections to see summary</div>'; return; }
+  const totalOdd=betSlip.reduce((acc,s)=>acc*s.odd,1);
+  const potWin=stake*totalOdd;
+  document.getElementById('slipSummary').innerHTML=`
+    <div class="slip-row"><span>Selections</span><span>${betSlip.length}</span></div>
+    <div class="slip-row"><span>Total Odds</span><span style="color:var(--gold)">${totalOdd.toFixed(2)}</span></div>
+    <div class="slip-row"><span>Stake</span><span>KES ${stake.toFixed(2)}</span></div>
+    <div class="slip-row total"><span>Potential Win</span><span>KES ${potWin.toFixed(2)}</span></div>`;
+}
+
+function placeSportsBet(){
+  if(!state.loggedIn){ closeBetSlip(); openModal('loginModal'); return; }
+  if(!betSlip.length){ showToast('Add selections first','error'); return; }
+  const stake=parseFloat(document.getElementById('slipStake').value)||0;
+  if(stake<10){ showToast('Min stake KES 10','error'); return; }
+  if(stake>state.balance+state.bonusBalance){ showToast('Insufficient balance','error'); return; }
+  if(state.bonusBalance>=stake) state.bonusBalance-=stake;
+  else{ const f=stake-state.bonusBalance; state.bonusBalance=0; state.balance-=f; }
+  const totalOdd=betSlip.reduce((acc,s)=>acc*s.odd,1);
+  const won=Math.random()<0.40;
+  state.stats.sportBets++;
+  if(won){
+    const w=stake*totalOdd; state.balance+=w; state.stats.wins++;
+    addTxn(`Sports Win (${totalOdd.toFixed(2)}x)`,'credit',w);
+    updateUI(); closeBetSlip(); showToast(`🏆 YOU WON KES ${w.toFixed(2)}!`,'success');
+  } else {
+    addTxn('Sports Bet Lost','debit',-stake); updateUI(); closeBetSlip(); showToast('❌ Bet lost. Try again!','error');
+  }
+  clearSlip();
+}
+
+// ===== AVIATOR — Odi Bets style =====
+const canvas = document.getElementById('aviatorCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas(){
+  const wrap = canvas.parentElement;
+  const W = wrap.clientWidth || 700;
+  canvas.width = W;
+  canvas.height = Math.min(300, Math.round(W * 0.45));
+  initStars();
+}
+window.addEventListener('resize', ()=>{ resizeCanvas(); if(game.phase==='waiting') drawWaiting(); });
+setTimeout(resizeCanvas, 80);
+
+function initStars(){
+  stars = [];
+  for(let i=0;i<120;i++){
+    stars.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*1.2+0.2,
+      o: Math.random()*0.7+0.1,
+      speed: Math.random()*0.15+0.05
+    });
+  }
+}
+
+let game = {
+  phase:'waiting', multiplier:1.0, betPlaced:false, betAmount:0,
+  cashedOut:false, round:1, history:[], animFrame:null,
+  points:[], crashAt:1.0, autoCashout:2.0, countdown:5,
+  livePlayers:[]
+};
+
+// ── Draw helpers ──────────────────────────────────────────────────────────────
+function drawBg(){
+  const W=canvas.width, H=canvas.height;
+  // Deep space gradient
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#08090f');
+  bg.addColorStop(1,'#0b0d1a');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  // Grid lines
+  ctx.strokeStyle='rgba(255,255,255,0.03)'; ctx.lineWidth=1;
+  for(let x=0;x<W;x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for(let y=0;y<H;y+=40){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+}
+
+function drawStars(elapsed){
+  stars.forEach(s=>{
+    s.x -= s.speed * (game.phase==='flying' ? 1+game.multiplier*0.3 : 0.5);
+    if(s.x < 0) s.x = canvas.width;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${s.o})`;
+    ctx.fill();
+  });
+}
+
+function drawWaiting(){
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  drawBg();
+  drawStars(0);
+  // Countdown circle
+  const cx=W/2, cy=H/2;
+  ctx.beginPath(); ctx.arc(cx,cy,46,0,Math.PI*2);
+  ctx.strokeStyle='rgba(229,25,58,0.15)'; ctx.lineWidth=2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,38,0,Math.PI*2);
+  ctx.fillStyle='rgba(229,25,58,0.08)'; ctx.fill();
+  ctx.font='bold 28px Orbitron,monospace'; ctx.fillStyle='rgba(255,255,255,0.15)';
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(game.countdown, cx, cy);
+  ctx.font='10px Exo 2,sans-serif'; ctx.fillStyle='rgba(100,116,139,0.8)';
+  ctx.fillText('WAITING FOR NEXT ROUND', cx, cy+54);
+}
+
+function drawFlying(){
+  const W=canvas.width, H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  drawBg();
+  drawStars(0);
+  if(game.points.length<2) return;
+
+  const crashed = game.phase==='crashed';
+
+  // Trail gradient (red-to-orange when normal, red when crashed)
+  const trailGrad = ctx.createLinearGradient(
+    game.points[0].x, 0, game.points[game.points.length-1].x, 0
+  );
+  if(crashed){
+    trailGrad.addColorStop(0,'rgba(229,25,58,0)');
+    trailGrad.addColorStop(1,'rgba(229,25,58,1)');
+  } else {
+    trailGrad.addColorStop(0,'rgba(229,25,58,0)');
+    trailGrad.addColorStop(0.5,'rgba(249,115,22,0.8)');
+    trailGrad.addColorStop(1,'rgba(250,204,21,1)');
+  }
+
+  // Draw line
+  ctx.beginPath();
+  ctx.moveTo(game.points[0].x, game.points[0].y);
+  for(let i=1;i<game.points.length;i++) ctx.lineTo(game.points[i].x, game.points[i].y);
+  ctx.strokeStyle = trailGrad; ctx.lineWidth = 3; ctx.lineJoin='round'; ctx.stroke();
+
+  // Fill area under curve
+  const areaGrad = ctx.createLinearGradient(0,0,0,H);
+  if(crashed){
+    areaGrad.addColorStop(0,'rgba(229,25,58,0.18)');
+  } else {
+    areaGrad.addColorStop(0,'rgba(249,115,22,0.14)');
+  }
+  areaGrad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.moveTo(game.points[0].x, game.points[0].y);
+  for(let i=1;i<game.points.length;i++) ctx.lineTo(game.points[i].x, game.points[i].y);
+  const last = game.points[game.points.length-1];
+  ctx.lineTo(last.x, H); ctx.lineTo(game.points[0].x, H); ctx.closePath();
+  ctx.fillStyle = areaGrad; ctx.fill();
+
+  // Plane / explosion at tip
+  ctx.font='20px serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  if(crashed){
+    // Explosion burst
+    ctx.font='26px serif'; ctx.fillText('💥', last.x, last.y);
+  } else {
+    // Glowing dot at tip
+    ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI*2);
+    ctx.fillStyle='rgba(250,204,21,0.9)';
+    ctx.shadowColor='rgba(250,204,21,0.9)'; ctx.shadowBlur=12;
+    ctx.fill(); ctx.shadowBlur=0;
+    // Plane emoji slightly ahead
+    ctx.font='18px serif'; ctx.fillText('✈️', last.x+10, last.y-10);
+  }
+}
+
+// ── Game logic ────────────────────────────────────────────────────────────────
+function genCrash(){
+  const r = Math.random();
+  if(r < 0.05) return 1.0 + Math.random()*0.3; // early crash 5%
+  return Math.max(1.0, (1/(1-r*0.96)));
+}
+
+function setMultDisplay(val, phase){
+  const el = document.getElementById('multiplierDisplay');
+  const valEl = document.getElementById('multVal');
+  const subEl = document.getElementById('multSub');
+  el.className = 'multiplier-display ' + phase;
+  if(phase==='waiting'){
+    valEl.textContent = game.countdown+'s';
+    subEl.textContent = 'PLACING BETS';
+  } else if(phase==='flying'){
+    valEl.textContent = val.toFixed(2)+'x';
+    subEl.textContent = 'FLYING AWAY';
+  } else {
+    valEl.textContent = val.toFixed(2)+'x';
+    subEl.textContent = 'FLEW AWAY';
+  }
+}
+
+let countdownTimer = null;
+
+function startWaiting(){
+  game.phase='waiting'; game.betPlaced=false; game.cashedOut=false;
+  game.multiplier=1.0; game.points=[]; game.countdown=5;
+
+  setMultDisplay(1.0,'waiting');
+  resetBetBtn();
+  document.getElementById('cashoutBtn').style.display='none';
+  genLivePlayers();
+
+  // Countdown
+  if(countdownTimer) clearInterval(countdownTimer);
+  countdownTimer = setInterval(()=>{
+    game.countdown--;
+    setMultDisplay(1.0,'waiting');
+    drawWaiting();
+    if(game.countdown<=0){ clearInterval(countdownTimer); startFlying(); }
+  }, 1000);
+  drawWaiting();
+}
+
+function startFlying(){
+  game.crashAt = genCrash();
+  game.phase = 'flying'; game.multiplier = 1.0; game.points = [];
+  let t0 = Date.now();
+
+  if(game.betPlaced && !game.cashedOut){
+    document.getElementById('betBtn').style.display='none';
+    document.getElementById('cashoutBtn').style.display='block';
+  }
+
+  function fly(){
+    const W=canvas.width, H=canvas.height, elapsed=(Date.now()-t0)/1000;
+    game.multiplier = Math.round(Math.pow(1.0+elapsed*0.35, 1.18)*100)/100;
+    const prog = Math.min(elapsed/14, 1);
+    // Curve starts bottom-left, arcs to top-right
+    const px = 30 + prog*(W-60);
+    const py = H - 20 - (H-50)*Math.pow(prog, 0.65);
+    game.points.push({x:px, y:py});
+    if(game.points.length>150) game.points.shift();
+
+    setMultDisplay(game.multiplier,'flying');
+    drawFlying();
+
+    // Auto cashout
+    if(game.betPlaced && !game.cashedOut){
+      const autoOn = document.getElementById('autoCashoutToggle').checked;
+      const autoVal = parseFloat(document.getElementById('autoCashout').value)||2.0;
+      document.getElementById('cashoutWinAmt').textContent =
+        'KES '+( game.betAmount*game.multiplier ).toFixed(2);
+      if(autoOn && game.multiplier >= autoVal) cashOut();
+    }
+
+    // Update live players' multipliers
+    updateLivePlayersFlying();
+
+    if(game.multiplier >= game.crashAt){ crash(); return; }
+    game.animFrame = requestAnimationFrame(fly);
+  }
+  fly();
+}
+
+function crash(){
+  cancelAnimationFrame(game.animFrame);
+  game.phase = 'crashed';
+  setMultDisplay(game.multiplier,'crashed');
+  document.getElementById('cashoutBtn').style.display='none';
+  document.getElementById('betBtn').style.display='block';
+  resetBetBtn();
+  addHistory(game.multiplier);
+  markLivePlayersCrashed();
+  drawFlying();
+
+  if(game.betPlaced && !game.cashedOut){
+    showToast(`💥 Flew away at ${game.multiplier.toFixed(2)}x — Lost KES ${game.betAmount}`,'error');
+    if(state.loggedIn){
+      addTxn('Aviator Lost','debit',-game.betAmount);
+      state.stats.games++; updateUI(); updateAviStats();
+    }
+  }
+  game.round++;
+  document.getElementById('roundBadge').textContent = 'Round #'+game.round;
+  setTimeout(()=>startWaiting(), 3500);
+}
+
+function addHistory(m){
+  game.history.unshift(m);
+  if(game.history.length>14) game.history.pop();
+  const row = document.getElementById('historyRow');
+  row.innerHTML='';
+  game.history.forEach(x=>{
+    const c=document.createElement('span');
+    c.className='hist-chip '+(x>=10?'high':x>=2?'mid':'low');
+    c.textContent=x.toFixed(2)+'x';
+    row.appendChild(c);
+  });
+}
+
+// ── Live players ──────────────────────────────────────────────────────────────
+const PNAMES=['K***i','M***a','J***n','A***u','W***a','C***s','P***o','N***e','D***s','F***a','G***o','H***u','I***e','L***k'];
+
+function genLivePlayers(){
+  game.livePlayers=[];
+  const count = 8 + Math.floor(Math.random()*10);
+  for(let i=0;i<count;i++){
+    const bet = [10,20,50,100,200,500,1000][Math.floor(Math.random()*7)];
+    const autoCO = Math.random()<0.6 ? (1.5+Math.random()*8).toFixed(2)*1 : null;
+    game.livePlayers.push({
+      name: PNAMES[Math.floor(Math.random()*PNAMES.length)],
+      bet, autoCO, status:'playing', mult:null, win:null
+    });
+  }
+  renderLivePlayers();
+}
+
+function updateLivePlayersFlying(){
+  game.livePlayers.forEach(p=>{
+    if(p.status==='playing' && p.autoCO && game.multiplier>=p.autoCO){
+      p.status='won'; p.mult=game.multiplier; p.win=p.bet*game.multiplier;
+    }
+  });
+  renderLivePlayers();
+}
+
+function markLivePlayersCrashed(){
+  game.livePlayers.forEach(p=>{
+    if(p.status==='playing'){ p.status='lost'; p.mult=game.multiplier; }
+  });
+  renderLivePlayers();
+}
+
+function renderLivePlayers(){
+  const list = document.getElementById('liveBetsList');
+  list.innerHTML='';
+  game.livePlayers.forEach(p=>{
+    const row=document.createElement('div'); row.className='avi-player-row';
+    const multClass = p.status==='won'?'won':p.status==='lost'?'lost':'playing';
+    const multTxt = p.mult ? p.mult.toFixed(2)+'x' : (game.phase==='flying'?game.multiplier.toFixed(2)+'x':'—');
+    const winTxt = p.win ? p.win.toFixed(2) : (p.status==='lost'?'—':'');
+    row.innerHTML=`
+      <span class="avi-player-name">${p.name}</span>
+      <span class="avi-player-bet">${p.bet}</span>
+      <span class="avi-player-mult ${multClass}">${multTxt}</span>
+      <span class="avi-player-win">${winTxt}</span>`;
+    list.appendChild(row);
+  });
+}
+
+function switchPlayerTab(el, key){
+  document.querySelectorAll('.avi-ptab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  // For now all tabs show same data; extend as needed
+}
+
+// ── Bet actions ───────────────────────────────────────────────────────────────
+function resetBetBtn(){
+  const btn = document.getElementById('betBtn');
+  btn.style.display='block'; btn.disabled=false;
+  btn.className='avi-bet-btn idle';
+  btn.textContent='BET KES '+(document.getElementById('betAmount').value||50);
+  document.getElementById('betDisplay').textContent=(document.getElementById('betAmount').value||50);
+}
+
+function placeBet(){
+  if(!state.loggedIn){ openModal('loginModal'); return; }
+  if(game.phase!=='waiting'){ showToast('Wait for next round','info'); return; }
+  const amt = parseFloat(document.getElementById('betAmount').value)||0;
+  if(amt<1){ showToast('Min bet KES 1','error'); return; }
+  if(amt>state.balance+state.bonusBalance){ showToast('Insufficient balance','error'); return; }
+
+  game.betAmount=amt; game.betPlaced=true; game.cashedOut=false;
+  game.autoCashout=parseFloat(document.getElementById('autoCashout').value)||2.0;
+
+  if(state.bonusBalance>=amt) state.bonusBalance-=amt;
+  else{ const f=amt-state.bonusBalance; state.bonusBalance=0; state.balance-=f; }
+  updateUI();
+
+  const btn=document.getElementById('betBtn');
+  btn.className='avi-bet-btn placed'; btn.textContent='✓ WAITING FOR ROUND';
+  showToast(`Bet KES ${amt} placed for next round!`,'success');
+}
+
+function cashOut(){
+  if(!game.betPlaced||game.cashedOut||game.phase!=='flying') return;
+  game.cashedOut=true;
+  const win = game.betAmount*game.multiplier;
+  state.balance+=win; state.stats.games++; state.stats.wins++;
+  if(game.multiplier>state.stats.bestMult) state.stats.bestMult=game.multiplier;
+  addTxn(`Aviator Win (${game.multiplier.toFixed(2)}x)`,'credit',win);
+  updateUI(); updateAviStats();
+  showToast(`🚀 Cashed out KES ${win.toFixed(2)} @ ${game.multiplier.toFixed(2)}x`,'success');
+  document.getElementById('cashoutBtn').style.display='none';
+  resetBetBtn();
+}
+
+function halveBet(){
+  const inp=document.getElementById('betAmount');
+  inp.value=Math.max(1,Math.floor((parseFloat(inp.value)||50)/2));
+  document.getElementById('betDisplay').textContent=inp.value;
+}
+function doubleBet(){
+  const inp=document.getElementById('betAmount');
+  inp.value=Math.min(50000,Math.floor((parseFloat(inp.value)||50)*2));
+  document.getElementById('betDisplay').textContent=inp.value;
+}
+function setBet(v){
+  document.getElementById('betAmount').value=v;
+  document.getElementById('betDisplay').textContent=v;
+}
+document.getElementById('betAmount').addEventListener('input',()=>{
+  document.getElementById('betDisplay').textContent=document.getElementById('betAmount').value;
+});
+
+function updateAviStats(){
+  document.getElementById('statGamesAvi').textContent=state.stats.games;
+  document.getElementById('statWinsAvi').textContent=state.stats.wins;
+  document.getElementById('statBestAvi').textContent=(state.stats.bestMult||1).toFixed(2)+'x';
+}
+
+// ===== AUTH =====
+function register(){
+  const name=document.getElementById('regName').value.trim();
+  const phone=document.getElementById('regPhone').value.trim();
+  const pass=document.getElementById('regPass').value;
+  if(!name||!phone||!pass){showToast('Fill all fields','error');return;}
+  if(!/^0[17]\d{8}$/.test(phone)){showToast('Enter valid Kenyan number','error');return;}
+  if(pass.length<6){showToast('Password too short','error');return;}
+  state.loggedIn=true; state.user={name,phone}; state.balance=0; state.bonusBalance=500;
+  state.transactions=[]; state.stats={games:0,wins:0,bestMult:1,sportBets:0};
+  addTxn('Welcome Bonus','credit',500);
+  closeModal('registerModal'); showLoggedIn();
+  setTimeout(()=>document.getElementById('bonusPopup').classList.add('open'),500);
+}
+
+function login(){
+  const phone=document.getElementById('loginPhone').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  if(!phone||!pass){showToast('Enter phone and password','error');return;}
+  if(!/^0[17]\d{8}$/.test(phone)){showToast('Invalid phone number','error');return;}
+  state.loggedIn=true; state.user={name:'Player',phone};
+  closeModal('loginModal'); showLoggedIn(); showToast('Welcome back!','success');
+}
+
+function logout(){
+  state.loggedIn=false; state.user=null; clearAutoRefresh();
+  document.getElementById('userNav').style.display='none';
+  document.getElementById('guestNav').style.display='flex';
+  document.getElementById('bottomNav').style.display='none';
+  betSlip=[]; updateSlipFab(); showPage('home'); showToast('Logged out','info');
+}
+
+function showLoggedIn(){
+  document.getElementById('guestNav').style.display='none';
+  document.getElementById('userNav').style.display='flex';
+  document.getElementById('bottomNav').style.display='flex';
+  updateUI(); showPage('sports');
+}
+
+// ===== WALLET =====
+function formatDepPhone(inp){
+  let v=inp.value.replace(/\D/g,'');
+  inp.value=v;
+  const err=document.getElementById('depPhoneErr');
+  err.style.display=(v.length>0&&!/^[71]\d{8}$/.test(v))?'block':'none';
+}
+function formatWithPhone(inp){
+  let v=inp.value.replace(/\D/g,'');
+  inp.value=v;
+  const err=document.getElementById('withPhoneErr');
+  err.style.display=(v.length>0&&!/^[71]\d{8}$/.test(v))?'block':'none';
+}
+function setDepAmt(n){
+  document.getElementById('depAmount').value=n;
+  updateDepSummary();
+}
+function setWithAmt(n){
+  document.getElementById('withAmount').value=n;
+  updateWithSummary();
+}
+function setWithMax(){
+  document.getElementById('withAmount').value=(state.balance||0).toFixed(0);
+  updateWithSummary();
+}
+function updateDepSummary(){
+  const amt=parseFloat(document.getElementById('depAmount').value)||0;
+  const box=document.getElementById('depSummary');
+  if(amt>=10){
+    box.style.display='block';
+    document.getElementById('depSumAmt').textContent='KES '+amt.toFixed(2);
+    document.getElementById('depSumTotal').textContent='KES '+amt.toFixed(2);
+  } else { box.style.display='none'; }
+}
+function updateWithSummary(){
+  const amt=parseFloat(document.getElementById('withAmount').value)||0;
+  const box=document.getElementById('withSummary');
+  if(amt>=100){
+    box.style.display='block';
+    document.getElementById('withSumAmt').textContent='KES '+amt.toFixed(2);
+    document.getElementById('withSumTotal').textContent='KES '+amt.toFixed(2);
+    const rem=Math.max(0,(state.balance||0)-amt);
+    document.getElementById('withSumBal').textContent='KES '+rem.toFixed(2);
+  } else { box.style.display='none'; }
+}
+function animateSTKSteps(prefix, steps, onDone){
+  let i=0;
+  function nextStep(){
+    if(i>0){ const prev=document.getElementById(prefix+(i)); if(prev){prev.classList.remove('active');prev.classList.add('done');} }
+    if(i<steps){
+      const cur=document.getElementById(prefix+(i+1));
+      if(cur){cur.classList.remove('pending');cur.classList.add('active');}
+      i++; setTimeout(nextStep, 700+Math.random()*400);
+    } else { setTimeout(onDone,300); }
+  }
+  nextStep();
+}
+function doDeposit(){
+  if(!state.loggedIn){closeModal('depositModal');openModal('loginModal');return;}
+  const amt=parseFloat(document.getElementById('depAmount').value)||0;
+  const rawPhone=document.getElementById('depPhone').value.trim();
+  if(!rawPhone||!/^[71]\d{8}$/.test(rawPhone)){showToast('Enter a valid M-Pesa number','error');document.getElementById('depPhoneErr').style.display='block';return;}
+  if(amt<10){showToast('Min deposit KES 10','error');return;}
+  const phone='0'+rawPhone;
+  const btn=document.getElementById('depBtn');
+  btn.disabled=true; btn.textContent='⏳ Sending STK Push...';
+  document.getElementById('depProgress').style.display='block';
+  ['stkStep1','stkStep2','stkStep3','stkStep4'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='stk-step pending';}});
+  animateSTKSteps('stkStep',4,()=>{
+    state.balance+=amt; addTxn('M-Pesa Deposit','credit',amt); updateUI();
+    closeModal('depositModal');
+    btn.disabled=false; btn.textContent='📲 SEND STK PUSH';
+    document.getElementById('depProgress').style.display='none';
+    document.getElementById('depAmount').value=''; document.getElementById('depPhone').value='';
+    document.getElementById('depSummary').style.display='none';
+    showToast(`✅ KES ${amt.toFixed(2)} deposited via M-Pesa!`,'success');
+  });
+}
+function doWithdraw(){
+  if(!state.loggedIn){closeModal('withdrawModal');openModal('loginModal');return;}
+  const amt=parseFloat(document.getElementById('withAmount').value)||0;
+  const rawPhone=document.getElementById('withPhone').value.trim();
+  if(!rawPhone||!/^[71]\d{8}$/.test(rawPhone)){showToast('Enter a valid M-Pesa number','error');document.getElementById('withPhoneErr').style.display='block';return;}
+  if(amt<100){showToast('Min withdrawal KES 100','error');return;}
+  if(amt>state.balance){showToast('Insufficient balance','error');return;}
+  const phone='0'+rawPhone;
+  const btn=document.getElementById('withBtn');
+  btn.disabled=true; btn.textContent='⏳ Processing...';
+  document.getElementById('withProgress').style.display='block';
+  ['withStep1','withStep2','withStep3','withStep4'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='stk-step pending';}});
+  animateSTKSteps('withStep',4,()=>{
+    state.balance-=amt; addTxn('M-Pesa Withdrawal','debit',-amt); updateUI();
+    closeModal('withdrawModal');
+    btn.disabled=false; btn.textContent='💸 WITHDRAW NOW';
+    document.getElementById('withProgress').style.display='none';
+    document.getElementById('withAmount').value=''; document.getElementById('withPhone').value='';
+    document.getElementById('withSummary').style.display='none';
+    showToast(`✅ KES ${amt.toFixed(2)} sent to ${phone} via M-Pesa!`,'success');
+  });
+}
+
+function addTxn(type,dir,amt){
+  state.transactions.unshift({type,dir,amt,date:new Date().toLocaleString('en-KE',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})});
+  if(state.transactions.length>50) state.transactions.pop();
+}
+
+// ===== UI =====
+function updateUI(){
+  const bal=(state.balance||0).toFixed(2),bon=(state.bonusBalance||0).toFixed(2);
+  document.getElementById('navBal').textContent=bal;
+  document.getElementById('walletBal').textContent=bal;
+  document.getElementById('bonusBal').textContent=bon;
+  if(state.user){
+    document.getElementById('profileAvatar').textContent=state.user.name[0].toUpperCase();
+    document.getElementById('profileName').textContent=state.user.name;
+    document.getElementById('profilePhone').textContent=state.user.phone;
+    document.getElementById('statGames').textContent=state.stats.games;
+    document.getElementById('statWins').textContent=state.stats.wins;
+    document.getElementById('statSports').textContent=state.stats.sportBets||0;
+    document.getElementById('statBigWin').textContent=(state.stats.bestMult||1).toFixed(2)+'x';
+  }
+  const list=document.getElementById('txnList'); list.innerHTML='';
+  if(!state.transactions.length){ list.innerHTML='<div style="padding:18px;text-align:center;color:var(--text2);font-size:.82rem">No transactions yet</div>'; return; }
+  state.transactions.forEach(t=>{
+    const el=document.createElement('div'); el.className='txn-item';
+    el.innerHTML=`<div><div class="txn-type">${t.type}</div><div class="txn-date">${t.date}</div></div><div class="txn-amt ${t.dir}">${t.dir==='credit'?'+':''} KES ${Math.abs(t.amt).toFixed(2)}</div>`;
+    list.appendChild(el);
+  });
+}
+
+// ===== PAGES =====
+const pageOrder=['home','sports','game','wallet','profile'];
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id+'Page').classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach((b,i)=>{ b.classList.remove('active'); if(pageOrder[i]===id) b.classList.add('active'); });
+  if(id==='sports'){
+    if(!apiMatches[currentSport]) loadMatches(currentSport);
+    if(currentSport==='live') startAutoRefresh();
+  } else clearAutoRefresh();
+}
+
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='withdrawModal'){
+    const el=document.getElementById('withBalDisplay');
+    if(el) el.textContent='KES '+(state.balance||0).toFixed(2);
+  }
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+document.getElementById('betslipModal').addEventListener('click',e=>{if(e.target===document.getElementById('betslipModal'))closeBetSlip();});
+function selectTab(el){ el.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); }
+
+function showToast(msg,type='info'){
+  const t=document.createElement('div'); t.className=`toast ${type}`; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),3200);
+}
+
+// ===== INIT =====
+initStars();
+startWaiting();
+updateCurrentKeyDisplay();
+// real odds pref removed (Sportradar provides live odds)
+</script>
+</body>
+</html>

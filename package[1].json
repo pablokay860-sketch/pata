@@ -1,0 +1,9 @@
+{
+  "name": "patapata-proxy",
+  "version": "1.0.0",
+  "description": "Sportradar CORS proxy for PataPata Betting",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
