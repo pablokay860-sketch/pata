@@ -1,0 +1,17 @@
+{
+  "name": "pata",
+  "version": "1.0.0",
+  "description": "win big prizes",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Building...'",
+    "start": "echo 'Starting...'",
+    "dev": "echo 'Development server...'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "18.x"
+  }
+}
